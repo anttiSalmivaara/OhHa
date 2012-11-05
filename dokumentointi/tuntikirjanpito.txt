@@ -11,7 +11,9 @@
   Luokka Noppa koodattu
   Noppatestit koodattu
 5.11.
-12.45 -
+12.45 - 13.00
   Luokan Pelaaja koodaaminen aloitettu
   Luokan Pistetaulukko koodaaminen aloitettu
   Enum Kentta luotu
+17.30 - 18.00
+  Luokkien Pelaaja ja Pistetaulukko kehittelyä

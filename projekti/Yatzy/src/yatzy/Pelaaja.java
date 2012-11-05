@@ -1,34 +1,33 @@
 package yatzy;
 
+import java.util.Map;
+
 /**
  *
  * @author Antti Salmivaara antti.salmivaara@helsinki.fi
  */
 public class Pelaaja {
-    private int[] pistetaulukko;
+    private Pistetaulukko pistetaulukko;
     private String nimi;
     
     public Pelaaja(String nimi) {
-        this.pistetaulukko = new int[16];
+        this.pistetaulukko = new Pistetaulukko();
         this.nimi = nimi;
     }
     
-    public void asetaPisteet(int pisteet, int kentta) {
-        pistetaulukko[kentta] = pisteet;
-        if (kentta < 6) {
-            laskeBonus();
-        }
+    public void asetaPisteet(int pisteet, Kentta kentta) {
+        pistetaulukko.asetaPisteet(pisteet, kentta);
     }
     
-    public 
+    public Map getPisteet() {
+        return pistetaulukko.getPisteet();
+    }
     
-    private void laskeBonus() {
-        int apuSumma = 0;
-        for (int i = 0; i < 6; i++) {
-            apuSumma += pistetaulukko[i];
-        }
-        if (apuSumma >= 63) {
-            pistetaulukko[6] = 50;
-        } 
+    public int getSumma() {
+        return pistetaulukko.getSumma();
+    }
+    
+    public String toString() {
+        return nimi + ": \n" + pistetaulukko.toString();
     }
 }
