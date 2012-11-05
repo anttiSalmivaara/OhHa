@@ -3,10 +3,15 @@
   Aiheen valinta
   Ensimmäisen deadlinen valmistelu
   Aiheen kuvailun aloittaminen
-5.11
+5.11.
 02.15 - 3.20
   Rakenteen ideointia
   Tarvittavien luokkien ideointia
   Tarvittavien metodien ideointia
-  Noppa koodattu
+  Luokka Noppa koodattu
   Noppatestit koodattu
+5.11.
+12.45 -
+  Luokan Pelaaja koodaaminen aloitettu
+  Luokan Pistetaulukko koodaaminen aloitettu
+  Enum Kentta luotu

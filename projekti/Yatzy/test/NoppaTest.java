@@ -9,9 +9,9 @@ import yatzy.logiikka.*;
  *
  * @author Antti Salmivaara antti.salmivaara@helsinki.fi
  */
-public class NoppaTesti {
+public class NoppaTest {
     
-    public NoppaTesti() {
+    public NoppaTest() {
     }
     
     Noppa noppa;
