@@ -21,3 +21,6 @@
 12.30 - 13:45
   Testit luokille Pelaaja ja Pistetaulukko
   Luokan Peli koodaaminen aloitettu
+21.00 - 21.20
+  Tekstikäyttöliittymä aloitettu
+  
