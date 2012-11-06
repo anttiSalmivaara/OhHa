@@ -18,7 +18,10 @@ public class Pelaaja {
     public void asetaPisteet(int pisteet, Kentta kentta) {
         pistetaulukko.asetaPisteet(pisteet, kentta);
     }
-    
+
+    public String getNimi() {
+        return nimi;
+    }
     public Map getPisteet() {
         return pistetaulukko.getPisteet();
     }

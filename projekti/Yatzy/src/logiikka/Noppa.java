@@ -1,4 +1,4 @@
-package yatzy.logiikka;
+package logiikka;
 import yatzy.*;
 import java.util.Random;
 

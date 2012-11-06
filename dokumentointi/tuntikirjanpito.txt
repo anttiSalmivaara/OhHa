@@ -17,3 +17,7 @@
   Enum Kentta luotu
 17.30 - 18.00
   Luokkien Pelaaja ja Pistetaulukko kehittelyä
+6.11.
+12.30 - 13:45
+  Testit luokille Pelaaja ja Pistetaulukko
+  Luokan Peli koodaaminen aloitettu

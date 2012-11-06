@@ -1,10 +1,9 @@
-import org.junit.After;
-import org.junit.AfterClass;
+package logiikka;
+
+import logiikka.Noppa;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import yatzy.logiikka.*;
 /**
  *
  * @author Antti Salmivaara antti.salmivaara@helsinki.fi
