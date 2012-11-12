@@ -1,26 +1,30 @@
-28.10.
+28.10.2012
 14.15 - 16.00
   Aiheen valinta
   Ensimmäisen deadlinen valmistelu
   Aiheen kuvailun aloittaminen
-5.11.
+5.11.2012
 02.15 - 3.20
   Rakenteen ideointia
   Tarvittavien luokkien ideointia
   Tarvittavien metodien ideointia
   Luokka Noppa koodattu
   Noppatestit koodattu
-5.11.
+5.11.2012
 12.45 - 13.00
   Luokan Pelaaja koodaaminen aloitettu
   Luokan Pistetaulukko koodaaminen aloitettu
   Enum Kentta luotu
 17.30 - 18.00
   Luokkien Pelaaja ja Pistetaulukko kehittelyä
-6.11.
+6.11.2012
 12.30 - 13:45
   Testit luokille Pelaaja ja Pistetaulukko
   Luokan Peli koodaaminen aloitettu
 21.00 - 21.20
   Tekstikäyttöliittymä aloitettu
-  
+12.11.2012
+13.15 - 14.25
+  Tekstikäyttöliittymän ohjelmointia
+15.00 - 16.00
+  Tekstikäyttöliittymän ohjelmointia
