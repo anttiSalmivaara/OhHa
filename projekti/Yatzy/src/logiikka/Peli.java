@@ -56,21 +56,21 @@ public class Peli {
     
     public void kirjaaPisteet(Pelaaja nytVuorossa, int mihinKenttaan, List<Noppa> kirjattavat) {
         int pisteet = 0;
-        if (mihinKenttaan == 1) {
-            pisteet = laskeSumma(kirjattavat, 1);
-        } else if (mihinKenttaan == 2) {
-            pisteet = laskeSumma(kirjattavat, 2);
-        } else if (mihinKenttaan == 3) {
+        if (mihinKenttaan == 1) {       // ykköset
+            pisteet = laskeSumma(kirjattavat, 1); 
+        } else if (mihinKenttaan == 2) {  // kakkoset
+            pisteet = laskeSumma(kirjattavat, 2); 
+        } else if (mihinKenttaan == 3) {   // kolmoset
             pisteet = laskeSumma(kirjattavat, 3);
-        } else if (mihinKenttaan == 4) {
-            pisteet = laskeSumma(kirjattavat, 4);
-        } else if (mihinKenttaan == 5) {
-            pisteet = laskeSumma(kirjattavat, 5);
-        } else if (mihinKenttaan == 6) {
-            pisteet = laskeSumma(kirjattavat, 6);
-        } else if (mihinKenttaan == 7) {
-            pisteet = laskeSamojenSumma(kirjattavat, 2);
-        } else if (mihinKenttaan == 8) {
+        } else if (mihinKenttaan == 4) {  // neloset
+            pisteet = laskeSumma(kirjattavat, 4); 
+        } else if (mihinKenttaan == 5) {  // vitoset
+            pisteet = laskeSumma(kirjattavat, 5); 
+        } else if (mihinKenttaan == 6) {  // kutoset
+            pisteet = laskeSumma(kirjattavat, 6); 
+        } else if (mihinKenttaan == 7) {  // pari
+            pisteet = laskeSamojenSumma(kirjattavat, 2); 
+        } else if (mihinKenttaan == 8) {  // kaksi paria
             Map<Integer, Integer> yhdistelmat = ryhmitteleLuvunMukaan(kirjattavat);
             int laskuri = 0;
             for (int i : yhdistelmat.keySet()) {
@@ -83,19 +83,35 @@ public class Peli {
                 pisteet = 0;
             }
             
-        } else if (mihinKenttaan == 9) {
+        } else if (mihinKenttaan == 9) { // kolme samaa
             pisteet = laskeSamojenSumma(kirjattavat, 3);
-        } else if (mihinKenttaan == 10) {
+        } else if (mihinKenttaan == 10) { // neljä samaa
             pisteet = laskeSamojenSumma(kirjattavat, 4);
-        } else if (mihinKenttaan == 11) {
+        } else if (mihinKenttaan == 11) {  // pieni suora
             pisteet = laskeSuora(kirjattavat, 1, 5);
-        } else if (mihinKenttaan == 12) {
+        } else if (mihinKenttaan == 12) {  // suuri suora
             pisteet = laskeSuora(kirjattavat, 2, 6);
+        } else if (mihinKenttaan == 13) {  // täyskäsi
+            pisteet = laskeSamojenSumma(kirjattavat, 3);
+ 
+            Map<Integer,Integer> yhdistelmat = ryhmitteleLuvunMukaan(kirjattavat);
+            if (yhdistelmat.values().contains(2)) {
+                for (int i : yhdistelmat.keySet()) {
+                    if (yhdistelmat.get(i) == 2) {
+                        pisteet += i * 2;
+                    }
+                }
+            }
+        } else if (mihinKenttaan == 14) {  // sattuma
+            for (Noppa n : kirjattavat) {
+                pisteet += n.getLuku();
+            }
+        } else if (mihinKenttaan == 15) {  // yahtzee
+            pisteet = laskeSamojenSumma(kirjattavat, 5);
+            if (pisteet > 0) {
+                pisteet = 50;
+            }
         }
-        otsikko.put(Kentta.TAYSKASI,   " tKäsi   (13) ");
-        otsikko.put(Kentta.SATTUMA,    " Sattuma (14) ");
-        otsikko.put(Kentta.YATZY,      " YATZY   (15) ");
-        otsikko.put(Kentta.SUMMA,      " Summa        ");
     }
     
     public boolean peliLoppu() {
@@ -141,7 +157,7 @@ public class Peli {
         ArrayList<Integer> vaihtoehdot = new ArrayList<>();
         vaihtoehdot.add(0);
         for (int i : ryhmitelty.keySet()) {
-            if (ryhmitelty.get(i) == montakoSamaa) {
+            if (ryhmitelty.get(i) >=  montakoSamaa) {
                 vaihtoehdot.add(i * montakoSamaa);
             }
         }

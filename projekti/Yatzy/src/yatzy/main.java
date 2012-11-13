@@ -4,7 +4,7 @@
  */
 package yatzy;
 import ui.Kayttoliittyma;
-import ui.teksti;
+import ui.Teksti;
 /**
  *
  * @author antti
@@ -12,7 +12,7 @@ import ui.teksti;
 public class main {
     
    public static void main(String[] args) {
-        Kayttoliittyma gui = new teksti();
+        Kayttoliittyma gui = new Teksti();
         gui.kaynnista();
     }
 }

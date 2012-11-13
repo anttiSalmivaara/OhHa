@@ -11,14 +11,14 @@ import java.util.HashMap;
  *
  * @author Antti Salmivaara antti.salmivaara@helsinki.fi
  */
-public class teksti implements Kayttoliittyma {
+public class Teksti implements Kayttoliittyma {
     
     private Scanner lukija;
     private Peli peli;
     private PiirraNopat nopat;
     Map<Kentta, String> otsikko;
     
-    public teksti() {
+    public Teksti() {
         lukija = new Scanner(System.in);
         peli = new Peli();
         otsikko = luoOtsikko();
@@ -116,7 +116,7 @@ public class teksti implements Kayttoliittyma {
     }
     private String valiviiva = "----------------------------------------------------------------------------------------------------------------------------------- ";
     
-    private Map<Kentta,String> luoOtsikko() {
+    protected Map<Kentta,String> luoOtsikko() {
         EnumMap <Kentta, String> otsikko;
         otsikko = new EnumMap<>(Kentta.class);
         otsikko.put(Kentta.YKKOSET,    " 1 (1) ");
