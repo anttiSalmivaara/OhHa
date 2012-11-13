@@ -43,8 +43,8 @@ public class Peli {
         
     }
     
-    public List<Noppa> heitaNopat(List<Noppa> heitettavat) {
-        for (Noppa n : heitettavat) {
+    public List<Noppa> heitaNopat(List<Integer> heitettavat) {
+        for (int n : heitettavat) {
             n.heita();
         }
         return heitettavat;

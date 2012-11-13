@@ -24,9 +24,13 @@ public class teksti implements Kayttoliittyma {
         
     @Override
     public void kaynnista() {
+        
+        System.out.println(nopat.alkuNopat());
+        
         String nimi;
+        int i = 1;
         while(true) {
-            System.out.println("Pelaajan 1 nimimerkki (max 6 merkkiä): ");
+            System.out.println("Pelaajan " + i + " nimimerkki (max 6 merkkiä): ");
             nimi = lukija.nextLine();
             if (nimi.isEmpty()) {
                 break;
@@ -34,13 +38,48 @@ public class teksti implements Kayttoliittyma {
             else {
                 peli.addPelaaja(nimi);
             }
+            i++;
         }
+        //System.out.flush();
+
         while (!peli.peliLoppu()) {
             
             tulostaTaulukko();
             tulostaNopat();
+            
+            ArrayList<Integer> noppanumerot = new ArrayList<Integer>();
+            String[] noppasyote;
+            String syote = "z";
+            int q = 1;
+            while (true) {
+                if (q == 3) {
+                    break;
+                }
+                System.out.println("Uudelleenheitto vai sijoitus kenttään? (u/k)");
+                syote = lukija.nextLine();
+                
+                if (syote.equals("u")) {
+                    System.out.println("Mitkä nopat? (1 - 5, pilkulla erotettuna)");
+                    syote = lukija.nextLine();
+                    noppasyote = syote.split(",");
+                    for (String j : noppasyote) {
+                        noppanumerot.add(Integer.parseInt(j.trim()));
+                    }
+                    peli.heitaNopat(noppanumerot);
+                } else {
+                    break;
+                }
+                
+                
+            }
+            System.out.println("Mihin kenttään?");
+            
+            
             peli.uusiKierros();
+            
         }
+        System.out.println(nopat.alkuNopat());
+        System.out.println("Kiitos pelaamisesta!");
         
     }
     @Override
