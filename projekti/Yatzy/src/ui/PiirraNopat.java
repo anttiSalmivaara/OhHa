@@ -9,9 +9,9 @@ import logiikka.Noppa;
 public class PiirraNopat {
     
     private String alkunopat = "┌───────┐ ┌───────┐ ┌───────┐ ┌───────┐ ┌───────┐\n" + 
-                               "|       │ │       │ │       │ │       │ │       │\n" +
-                               "|   Y   │ │   A   │ │   T   │ │   Z   │ │   Y   │\n" + 
-                               "|       │ │       │ │       │ │       │ │       │\n" +
+                               "│       │ │       │ │       │ │       │ │       │\n" +
+                               "│   Y   │ │   A   │ │   T   │ │   Z   │ │   Y   │\n" + 
+                               "│       │ │       │ │       │ │       │ │       │\n" +
                                "└───────┘ └───────┘ └───────┘ └───────┘ └───────┘\n";
     
     public PiirraNopat() {

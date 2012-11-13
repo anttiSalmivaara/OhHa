@@ -4,6 +4,7 @@ import logiikka.Noppa;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import java.util.ArrayList;
 /**
  *
  * @author Antti Salmivaara antti.salmivaara@helsinki.fi
@@ -41,6 +42,21 @@ public class NoppaTest {
             tulos = recHeita(kertaa - 1, tulos && (0 < noppa.getLuku() && noppa.getLuku() < 7), noppa);
         }
         return tulos;
+    }
+    
+    @Test
+    public void noppaHeittää10000KertaaKaikkiLuvutEsiintyy() {
+        ArrayList<Integer> tulokset = new ArrayList<Integer>();
+        for (int i = 0; i < 10000; i++) {
+            noppa.heita();
+            tulokset.add(noppa.getLuku());
+        }
+        assertTrue(tulokset.contains(1) &&
+                tulokset.contains(2) &&
+                tulokset.contains(3) &&
+                tulokset.contains(4) &&
+                tulokset.contains(5) &&
+                tulokset.contains(6));
     }
     
 

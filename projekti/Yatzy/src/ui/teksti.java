@@ -16,10 +16,12 @@ public class teksti implements Kayttoliittyma {
     private Scanner lukija;
     private Peli peli;
     private PiirraNopat nopat;
+    Map<Kentta, String> otsikko;
     
     public teksti() {
         lukija = new Scanner(System.in);
         peli = new Peli();
+        otsikko = luoOtsikko();
     }
         
     @Override
@@ -45,34 +47,36 @@ public class teksti implements Kayttoliittyma {
         while (!peli.peliLoppu()) {
             
             tulostaTaulukko();
-            tulostaNopat();
+            nopat.tulostaNopat(peli.getNopat());
             
             ArrayList<Integer> noppanumerot = new ArrayList<Integer>();
             String[] noppasyote;
             String syote = "z";
             int q = 1;
             while (true) {
-                if (q == 3) {
+                if (q > 3) {
                     break;
                 }
-                System.out.println("Uudelleenheitto vai sijoitus kenttään? (u/k)");
-                syote = lukija.nextLine();
-                
-                if (syote.equals("u")) {
-                    System.out.println("Mitkä nopat? (1 - 5, pilkulla erotettuna)");
+                while (!syote.equals("u") || !syote.equals("k")) {
+                    System.out.println("Uudelleenheitto vai sijoitus kenttään? (u/k)");
                     syote = lukija.nextLine();
-                    noppasyote = syote.split(",");
-                    for (String j : noppasyote) {
-                        noppanumerot.add(Integer.parseInt(j.trim()));
-                    }
-                    peli.heitaNopat(noppanumerot);
-                } else {
-                    break;
-                }
                 
+                    if (syote.equals("u")) {
+                        System.out.println("Mitkä nopat? (1 - 5, pilkulla erotettuna)");
+                        syote = lukija.nextLine();
+                        noppasyote = syote.split(",");
+                        for (String j : noppasyote) {
+                            noppanumerot.add(Integer.parseInt(j.trim()));
+                        }
+                        peli.heitaNopat(noppanumerot);
+                        tulostaNopat();
+                    }
+                }    
+                q++;
                 
             }
             System.out.println("Mihin kenttään?");
+            syote = lukija.nextLine();
             
             
             peli.uusiKierros();
@@ -84,52 +88,62 @@ public class teksti implements Kayttoliittyma {
     }
     @Override
     public void tulostaNopat() {
-        
+        System.out.println(nopat.tulostaNopat(peli.getNopat()));
     }
+    
     @Override
     public void tulostaTaulukko() {
-        StringBuilder sb = new StringBuilder();
+        //StringBuilder sb = new StringBuilder();
         System.out.println(valiviiva);
         System.out.print("|        |");
         luoOtsikko();
         System.out.println(valiviiva);
         for (Pelaaja p : peli.getPelaajat()) {
-            if (p.getNimi().length() < 6) {
-                System.out.print("");
+            System.out.print("| ");
+            System.out.print(p.getNimi());
+            for (int i = 0; i < 7 - p.getNimi().length(); i++) {
+                System.out.print(" ");
             }
-            System.out.println(p.getNimi());
-            for (Enum e : Kentta.values()) {
-                
+            System.out.print("| ");
+            for (Kentta k : otsikko) {
+                if (p.getPisteet().containsKey(k)) {
+                    System.out.print(p.getPisteet().get(k));
+                    for (int i = 0; i < otsikko.get(k).length() - p.getPisteet().get(k)) {
+                        //tulosta kentän pisteet ja oikea määrä välejä
+                    }
+                }
             }
 
         }
     }
     private String valiviiva = "----------------------------------------------------------------------------------------------------------------------------------- ";
     
-    private void luoOtsikko() {
-        HashMap <Kentta, String> otsikko = new HashMap<Kentta, String>();
-        otsikko.put(Kentta.YKKOSET, "  1  ");
-        otsikko.put(Kentta.KAKKOSET, "   2  ");
-        otsikko.put(Kentta.KOLMOSET, "  3  ");
-        otsikko.put(Kentta.NELOSET, "  4  ");
-        otsikko.put(Kentta.VITOSET, "  5  ");
-        otsikko.put(Kentta.KUTOSET, "  6  ");
-        otsikko.put(Kentta.BONUS, " Bonus ");
-        otsikko.put(Kentta.PARI, " Pari ");
-        otsikko.put(Kentta.KAKSIPARIA, " 2 Paria ");
-        otsikko.put(Kentta.KOLMESAMAA, " 3 Samaa ");
-        otsikko.put(Kentta.NELJASAMAA, " 4 Samaa ");
-        otsikko.put(Kentta.PIENISUORA, " suora ");
-        otsikko.put(Kentta.SUURISUORA, " SUORA ");
-        otsikko.put(Kentta.TAYSKASI, " Täyskäsi ");
-        otsikko.put(Kentta.SATTUMA, " Sattuma ");
-        otsikko.put(Kentta.YATZY, " YATZY ");
-        otsikko.put(Kentta.SUMMA, " Summa ");
+    private Map<Kentta,String> luoOtsikko() {
+        EnumMap <Kentta, String> otsikko;
+        otsikko = new EnumMap<>(Kentta.class);
+        otsikko.put(Kentta.YKKOSET,    " 1 (1) ");
+        otsikko.put(Kentta.KAKKOSET,   " 2 (2) ");
+        otsikko.put(Kentta.KOLMOSET,   " 3 (3) ");
+        otsikko.put(Kentta.NELOSET,    " 4 (4) ");
+        otsikko.put(Kentta.VITOSET,    " 5 (5) ");
+        otsikko.put(Kentta.KUTOSET,    " 6 (6) ");
+        otsikko.put(Kentta.BONUS,      " Bonus ");
+        otsikko.put(Kentta.PARI,       " Pari      (7)");
+        otsikko.put(Kentta.KAKSIPARIA, " 2 Paria  (8) ");
+        otsikko.put(Kentta.KOLMESAMAA, " 3 Samaa  (9) ");
+        otsikko.put(Kentta.NELJASAMAA, " 4 Samaa (10) ");
+        otsikko.put(Kentta.PIENISUORA, " suora   (11) ");
+        otsikko.put(Kentta.SUURISUORA, " SUORA   (12) ");
+        otsikko.put(Kentta.TAYSKASI,   " tKäsi   (13) ");
+        otsikko.put(Kentta.SATTUMA,    " Sattuma (14) ");
+        otsikko.put(Kentta.YATZY,      " YATZY   (15) ");
+        otsikko.put(Kentta.SUMMA,      " Summa        ");
         
+        return otsikko;
+    }
+    public void tulostaOtsikko() {
         for (Kentta k : otsikko.keySet()) {
             System.out.println(otsikko.get(k) + "|");
         }
-        
-        
     }
 }
