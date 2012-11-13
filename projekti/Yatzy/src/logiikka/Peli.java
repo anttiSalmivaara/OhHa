@@ -1,12 +1,8 @@
 package logiikka;
 
-import yatzy.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Map;
-import java.util.HashMap;
+import java.util.*;
+import yatzy.Kentta;
+import yatzy.Pelaaja;
 /**
  *
  * @author Antti Salmivaara antti.salmivaara@helsinki.fi
@@ -18,7 +14,8 @@ public class Peli {
     private Pelaaja vuorossaOleva;
     
     public Peli() {
-        this.pelaajat = new ArrayList<Pelaaja>();
+        this.pelaajat = new ArrayList<>();
+        this.nopat = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             this.nopat.add(new Noppa());
         }
@@ -54,23 +51,34 @@ public class Peli {
         return nopat;
     }
     
-    public void kirjaaPisteet(Pelaaja nytVuorossa, int mihinKenttaan, List<Noppa> kirjattavat) {
+    public List<Noppa> heitaKaikkiNopat() {
+        return heitaNopat(Arrays.asList(1,2,3,4,5));
+    }
+    
+    public void kirjaaPisteet(Pelaaja nytVuorossa, Kentta mihinKenttaan, List<Noppa> kirjattavat) {
         int pisteet = 0;
-        if (mihinKenttaan == 1) {       // ykköset
-            pisteet = laskeSumma(kirjattavat, 1); 
-        } else if (mihinKenttaan == 2) {  // kakkoset
-            pisteet = laskeSumma(kirjattavat, 2); 
-        } else if (mihinKenttaan == 3) {   // kolmoset
+        if (mihinKenttaan == Kentta.YKKOSET) {       // ykköset
+            pisteet = laskeSumma(kirjattavat, 1);
+            nytVuorossa.asetaPisteet(pisteet, Kentta.YKKOSET);
+        } else if (mihinKenttaan == Kentta.KAKKOSET) {  // kakkoset
+            pisteet = laskeSumma(kirjattavat, 2);
+            nytVuorossa.asetaPisteet(pisteet, Kentta.KAKKOSET);
+        } else if (mihinKenttaan == Kentta.KOLMOSET) {   // kolmoset
             pisteet = laskeSumma(kirjattavat, 3);
-        } else if (mihinKenttaan == 4) {  // neloset
-            pisteet = laskeSumma(kirjattavat, 4); 
-        } else if (mihinKenttaan == 5) {  // vitoset
+            nytVuorossa.asetaPisteet(pisteet, Kentta.KOLMOSET);
+        } else if (mihinKenttaan ==  Kentta.NELOSET) {  // neloset
+            pisteet = laskeSumma(kirjattavat, 4);
+            nytVuorossa.asetaPisteet(pisteet, Kentta.NELOSET);
+        } else if (mihinKenttaan == Kentta.VITOSET) {  // vitoset
             pisteet = laskeSumma(kirjattavat, 5); 
-        } else if (mihinKenttaan == 6) {  // kutoset
-            pisteet = laskeSumma(kirjattavat, 6); 
-        } else if (mihinKenttaan == 7) {  // pari
-            pisteet = laskeSamojenSumma(kirjattavat, 2); 
-        } else if (mihinKenttaan == 8) {  // kaksi paria
+            nytVuorossa.asetaPisteet(pisteet, Kentta.VITOSET);
+        } else if (mihinKenttaan == Kentta.KUTOSET) {  // kutoset
+            pisteet = laskeSumma(kirjattavat, 6);
+            nytVuorossa.asetaPisteet(pisteet, Kentta.KUTOSET);
+        } else if (mihinKenttaan == Kentta.PARI) {  // pari
+            pisteet = laskeSamojenSumma(kirjattavat, 2);
+            nytVuorossa.asetaPisteet(pisteet, Kentta.PARI);
+        } else if (mihinKenttaan == Kentta.KAKSIPARIA) {  // kaksi paria
             Map<Integer, Integer> yhdistelmat = ryhmitteleLuvunMukaan(kirjattavat);
             int laskuri = 0;
             for (int i : yhdistelmat.keySet()) {
@@ -82,16 +90,21 @@ public class Peli {
             if (laskuri < 2) {
                 pisteet = 0;
             }
+            nytVuorossa.asetaPisteet(pisteet, Kentta.KAKSIPARIA);
             
-        } else if (mihinKenttaan == 9) { // kolme samaa
+        } else if (mihinKenttaan == Kentta.KOLMESAMAA) { // kolme samaa
             pisteet = laskeSamojenSumma(kirjattavat, 3);
-        } else if (mihinKenttaan == 10) { // neljä samaa
+            nytVuorossa.asetaPisteet(pisteet, Kentta.KOLMESAMAA);
+        } else if (mihinKenttaan == Kentta.NELJASAMAA) { // neljä samaa
             pisteet = laskeSamojenSumma(kirjattavat, 4);
-        } else if (mihinKenttaan == 11) {  // pieni suora
+            nytVuorossa.asetaPisteet(pisteet, Kentta.NELJASAMAA);
+        } else if (mihinKenttaan == Kentta.PIENISUORA) {  // pieni suora
             pisteet = laskeSuora(kirjattavat, 1, 5);
-        } else if (mihinKenttaan == 12) {  // suuri suora
+            nytVuorossa.asetaPisteet(pisteet, Kentta.PIENISUORA);
+        } else if (mihinKenttaan == Kentta.SUURISUORA) {  // suuri suora
             pisteet = laskeSuora(kirjattavat, 2, 6);
-        } else if (mihinKenttaan == 13) {  // täyskäsi
+            nytVuorossa.asetaPisteet(pisteet, Kentta.SUURISUORA);
+        } else if (mihinKenttaan == Kentta.TAYSKASI) {  // täyskäsi
             pisteet = laskeSamojenSumma(kirjattavat, 3);
  
             Map<Integer,Integer> yhdistelmat = ryhmitteleLuvunMukaan(kirjattavat);
@@ -102,16 +115,22 @@ public class Peli {
                     }
                 }
             }
-        } else if (mihinKenttaan == 14) {  // sattuma
+            nytVuorossa.asetaPisteet(pisteet, Kentta.TAYSKASI);
+        } else if (mihinKenttaan == Kentta.SATTUMA) {  // sattuma
             for (Noppa n : kirjattavat) {
                 pisteet += n.getLuku();
             }
-        } else if (mihinKenttaan == 15) {  // yahtzee
+            nytVuorossa.asetaPisteet(pisteet, Kentta.SATTUMA);
+        } else if (mihinKenttaan == Kentta.YATZY) {  // yahtzee
             pisteet = laskeSamojenSumma(kirjattavat, 5);
             if (pisteet > 0) {
                 pisteet = 50;
             }
+            nytVuorossa.asetaPisteet(pisteet, Kentta.YATZY);
         }
+        laskeBonusPisteet(nytVuorossa);
+        
+        
     }
     
     public boolean peliLoppu() {
@@ -135,6 +154,13 @@ public class Peli {
     
     public List<Noppa> getNopat() {
         return nopat;
+    }
+    public List<Integer> getSilmaluvut() {
+        ArrayList<Integer> palaute = new ArrayList<>();
+        for (Noppa n : nopat) {
+            palaute.add(n.getLuku());
+        }
+        return palaute;
     }
     
     public Pelaaja getVuorossaOleva() {
@@ -209,7 +235,20 @@ public class Peli {
             palaute += i;
         }
         return palaute;
-        
-        
+    }
+    
+    protected void laskeBonusPisteet(Pelaaja vuorossa) {
+        Map<Kentta, Integer> bonusPisteet = vuorossa.getPisteet();
+        int bPisteet = 0;
+        Kentta[] ylakerta = {Kentta.YKKOSET, Kentta.KAKKOSET, Kentta.KOLMOSET,
+                             Kentta.NELOSET, Kentta.VITOSET, Kentta.KUTOSET};
+        for (Kentta k : ylakerta) {
+            if (bonusPisteet.keySet().contains(k)) {
+                bPisteet += bonusPisteet.get(k);
+            }
+        }
+        if (bPisteet >= 63) {
+            vuorossa.asetaPisteet(50, Kentta.BONUS);
+        }
     }
 }

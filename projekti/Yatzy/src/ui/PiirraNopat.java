@@ -8,14 +8,14 @@ import logiikka.Noppa;
  */
 public class PiirraNopat {
     
-    private String alkunopat = "┌───────┐ ┌───────┐ ┌───────┐ ┌───────┐ ┌───────┐\n" + 
-                               "│       │ │       │ │       │ │       │ │       │\n" +
-                               "│   Y   │ │   A   │ │   T   │ │   Z   │ │   Y   │\n" + 
-                               "│       │ │       │ │       │ │       │ │       │\n" +
-                               "└───────┘ └───────┘ └───────┘ └───────┘ └───────┘\n";
+    private String alkunopat;
     
     public PiirraNopat() {
- 
+        this.alkunopat = "┌───────┐ ┌───────┐ ┌───────┐ ┌───────┐ ┌───────┐\n" + 
+                         "│       │ │       │ │       │ │       │ │       │\n" +
+                         "│   Y   │ │   A   │ │   T   │ │   Z   │ │   Y   │\n" + 
+                         "│       │ │       │ │       │ │       │ │       │\n" +
+                         "└───────┘ └───────┘ └───────┘ └───────┘ └───────┘\n";
     }
    
     public String alkuNopat() {
@@ -33,19 +33,21 @@ public class PiirraNopat {
             } else if (nLuku == 3 || nLuku == 2) {
                 sb.append("│ ●     │ ");
             } else {
-                sb.append("│       | ");
+                sb.append("│       │ ");
             }
         }
+        sb.append("\n");
         for (Noppa n : nop) {
             int nLuku = n.getLuku();
             if (nLuku == 6) {
-                sb.append("│ ●   ● | ");
+                sb.append("│ ●   ● │ ");
             } else if (nLuku == 1 || nLuku == 3 || nLuku == 5) {
                 sb.append("│   ●   │ ");
             } else {
-                sb.append("│       | ");
+                sb.append("│       │ ");
             }
         }
+        sb.append("\n");
         for (Noppa n : nop) {
             int nLuku = n.getLuku();
             if (nLuku == 6 || nLuku == 5 || nLuku == 4) {
@@ -56,6 +58,7 @@ public class PiirraNopat {
                 sb.append("│       | ");
             }
         }
+        sb.append("\n");
         sb.append("└───────┘ └───────┘ └───────┘ └───────┘ └───────┘");
         sb.append("\n");
         return sb.toString();

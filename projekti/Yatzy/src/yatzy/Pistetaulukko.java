@@ -2,16 +2,17 @@ package yatzy;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.EnumMap;
 
 /**
  *
  * @author Antti Salmivaara antti.salmivaara@helsinki.fi
  */
 public class Pistetaulukko {
-    private HashMap<Kentta, Integer> pistetaulukko;
+    private EnumMap<Kentta, Integer> pistetaulukko;
     
     public Pistetaulukko() {
-        this.pistetaulukko = new HashMap<Kentta, Integer>();
+        this.pistetaulukko = new EnumMap<>(Kentta.class);
     }
     
     public void asetaPisteet(int pisteet, Kentta kentta) {
