@@ -53,11 +53,8 @@ public class teksti implements Kayttoliittyma {
             String[] noppasyote;
             String syote = "z";
             int q = 1;
-            while (true) {
-                if (q > 3) {
-                    break;
-                }
-                while (!syote.equals("u") || !syote.equals("k")) {
+            while (q < 4) {
+                while (!(syote.equals("u") || syote.equals("k"))) {
                     System.out.println("Uudelleenheitto vai sijoitus kenttään? (u/k)");
                     syote = lukija.nextLine();
                 
@@ -77,7 +74,7 @@ public class teksti implements Kayttoliittyma {
             }
             System.out.println("Mihin kenttään?");
             syote = lukija.nextLine();
-            
+            peli.kirjaaPisteet(peli.getVuorossaOleva(), Integer.parseInt(syote), peli.getNopat());
             
             peli.uusiKierros();
             
@@ -104,15 +101,16 @@ public class teksti implements Kayttoliittyma {
             for (int i = 0; i < 7 - p.getNimi().length(); i++) {
                 System.out.print(" ");
             }
-            System.out.print("| ");
-            for (Kentta k : otsikko) {
+            for (Kentta k : otsikko.keySet()) {
+                System.out.print("| ");
                 if (p.getPisteet().containsKey(k)) {
                     System.out.print(p.getPisteet().get(k));
-                    for (int i = 0; i < otsikko.get(k).length() - p.getPisteet().get(k)) {
-                        //tulosta kentän pisteet ja oikea määrä välejä
+                    for (int i = 0; i < otsikko.get(k).length() - p.getPisteet().get(k).toString().length() - 1; i++) {
+                        System.out.print(" ");
                     }
                 }
             }
+            System.out.println("|");
 
         }
     }
