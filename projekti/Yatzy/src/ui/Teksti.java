@@ -17,7 +17,7 @@ public class Teksti implements Kayttoliittyma {
     private Scanner lukija;
     private Peli peli;
     private PiirraNopat nopat;
-    Map<Kentta, String> otsikko;
+    private Map<Kentta, String> otsikko;
 
     public Teksti() {
         this.lukija = new Scanner(System.in);
@@ -44,52 +44,68 @@ public class Teksti implements Kayttoliittyma {
             }
             i++;
         }
-        //System.out.flush();
 
         while (!peli.peliLoppu()) {
             for (Pelaaja p : peli.getPelaajat()) {
-                
+
                 tulostaTaulukko();
+                peli.heitaKaikkiNopat();
                 tulostaNopat();
 
-                ArrayList<Integer> noppanumerot = new ArrayList<>();
-                String[] noppasyote;
                 String syote = "z";
-                int q = 1;
-                while (q < 4) {
-                    while (!(syote.equals("u") || syote.equals("k"))) {
-                        System.out.println("Uudelleenheitto vai sijoitus kenttään? (u/k)");
-                        System.out.print(": ");
-                        syote = lukija.nextLine();
+                int q = 0;
 
-                        if (syote.equals("u")) {
-                            System.out.println("Mitkä nopat? (1 - 5, pilkulla erotettuna)");
-                            System.out.print(": ");
-                            syote = lukija.nextLine();
-                            noppasyote = syote.split(",");
+                while (q < 2 && !syote.equals("k")) {
+
+                    System.out.println("Uudelleenheitto vai sijoitus kenttään? (u/k)");
+                    System.out.print(p.getNimi() + " : ");
+                    syote = lukija.nextLine();
+
+                    if (syote.equals("u")) {
+                        System.out.println("Mitkä nopat heitetään? (1 - 5, pilkulla erotettuna)");
+                        System.out.print(p.getNimi() + " : ");
+                        syote = lukija.nextLine();
+                        ArrayList<Integer> noppanumerot = new ArrayList<>();
+                        if (syote.length() == 1) {
+                            noppanumerot.add(Integer.parseInt(syote));
+                        } else {
+                            String[] noppasyote = syote.split(",");
                             for (String j : noppasyote) {
                                 noppanumerot.add(Integer.parseInt(j.trim()));
                             }
-                            peli.heitaNopat(noppanumerot);
-                            tulostaNopat();
                         }
+                        peli.heitaNopat(noppanumerot);
+                        tulostaNopat();
+                        q++;
+                    } else if (syote.equals("k")) {
+                        break;
+                    } else {
+                        System.out.println("Virheellinen syöte! Kokeile uudelleen.");
                     }
-                    q++;
-
                 }
                 System.out.println("Mihin kenttään?");
-                System.out.print(": ");
+                System.out.print(p.getNimi() + " : ");
                 syote = lukija.nextLine();
-                while (getKentta(syote) == Kentta.VIRHE) {
-                    System.out.println("Virheellinen syöte! Kokeile uudelleen.");
-                    System.out.print(": ");
+                while (true) {
+                    if (getKentta(syote) == Kentta.VIRHE) {
+                        System.out.println("Virheellinen syöte! Kokeile uudelleen.");
+                        System.out.print(p.getNimi() + " : ");
+                        syote = lukija.nextLine();
+                    } else {
+                        try {
+                            peli.kirjaaPisteet(p, getKentta(syote), peli.getNopat().values());
+                            break;
+                        } catch (Exception e) {
+                            System.out.println("Kenttä käytössä! Kokeile uudelleen.");
+                            System.out.print(p.getNimi() + " : ");
+                            syote = lukija.nextLine();
+                        }
+                    }
                 }
-                peli.kirjaaPisteet(p, getKentta(syote), peli.getNopat());
-
-                //peli.uusiKierros();
             }
 
         }
+        tulostaTaulukko();
         System.out.println(nopat.alkuNopat());
         System.out.println("Kiitos pelaamisesta!");
 
@@ -97,13 +113,13 @@ public class Teksti implements Kayttoliittyma {
 
     @Override
     public void tulostaNopat() {
-        System.out.println(nopat.tulostaNopat(peli.getNopat()));
+        System.out.println(nopat.tulostaNopat(peli.getNopat().values()));
     }
 
     @Override
     public void tulostaTaulukko() {
         //StringBuilder sb = new StringBuilder();
-        System.out.println(valiviiva);
+        System.out.println(ylaviiva);
         System.out.print("│        │");
         tulostaOtsikko();
         System.out.println(valiviiva);
@@ -120,11 +136,17 @@ public class Teksti implements Kayttoliittyma {
                     for (int i = 0; i < otsikko.get(k).length() - p.getPisteet().get(k).toString().length() - 1; i++) {
                         System.out.print(" ");
                     }
+                } else {
+                    for (int i = 0; i < otsikko.get(k).length() - 1; i++) {
+                        System.out.print(" ");
+                    }
                 }
+
             }
             System.out.println("│");
 
         }
+        System.out.println(alaviiva);
     }
 
     public void tulostaOtsikko() {
@@ -132,12 +154,12 @@ public class Teksti implements Kayttoliittyma {
             System.out.print(otsikko.get(k) + "│");
         }
         System.out.println("");
-    
-    String ylaviiva = "┌────────┬────┬────┬────┬────┬────┬────┬─────┬───────┬─────────┬─────────┬──────────┬─────────┬─────────┬─────────┬─────────┬───────────┬─────┐";
-    String valiviiva = "──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────";
-    String alaviiva = "";
     }
-    protected Map<Kentta, String> luoOtsikko() {
+    private String ylaviiva = "┌────────┬────┬────┬────┬────┬────┬────┬─────┬───────┬─────────┬─────────┬──────────┬─────────┬─────────┬─────────┬─────────┬───────┬─────┐";
+    private String valiviiva = "├────────┼────┼────┼────┼────┼────┼────┼─────┼───────┼─────────┼─────────┼──────────┼─────────┼─────────┼─────────┼─────────┼───────┼─────┤";
+    private String alaviiva = "└────────┴────┴────┴────┴────┴────┴────┴─────┴───────┴─────────┴─────────┴──────────┴─────────┴─────────┴─────────┴─────────┴───────┴─────┘";
+
+    protected final Map<Kentta, String> luoOtsikko() {
         EnumMap<Kentta, String> apuOtsikko;
         apuOtsikko = new EnumMap<>(Kentta.class);
         apuOtsikko.put(Kentta.YKKOSET, "1(1)");
@@ -154,8 +176,8 @@ public class Teksti implements Kayttoliittyma {
         apuOtsikko.put(Kentta.PIENISUORA, "suora(11)");
         apuOtsikko.put(Kentta.SUURISUORA, "SUORA(12)");
         apuOtsikko.put(Kentta.TAYSKASI, "tKäsi(13)");
-        apuOtsikko.put(Kentta.SATTUMA, "Sattuma(14)");
-        apuOtsikko.put(Kentta.YATZY, "YATZY(15)");
+        apuOtsikko.put(Kentta.YATZY, "YATZY(14)");
+        apuOtsikko.put(Kentta.SATTUMA, "Rnd(15)");
         apuOtsikko.put(Kentta.SUMMA, "Summa");
 
         return apuOtsikko;
@@ -163,22 +185,38 @@ public class Teksti implements Kayttoliittyma {
 
     protected Kentta getKentta(String syote) {
         switch (syote) {
-            case "1":  return Kentta.YKKOSET;
-            case "2":  return Kentta.KAKKOSET;
-            case "3":  return Kentta.KOLMOSET;
-            case "4":  return Kentta.NELOSET;
-            case "5":  return Kentta.VITOSET;
-            case "6":  return Kentta.KUTOSET;
-            case "7":  return Kentta.PARI;
-            case "8":  return Kentta.KAKSIPARIA;
-            case "9":  return Kentta.KOLMOSET;
-            case "10": return Kentta.NELOSET;
-            case "11": return Kentta.PIENISUORA;
-            case "12": return Kentta.SUURISUORA;
-            case "13": return Kentta.TAYSKASI;
-            case "14": return Kentta.SATTUMA;
-            case "15": return Kentta.YATZY;
-            default: return Kentta.VIRHE;
+            case "1":
+                return Kentta.YKKOSET;
+            case "2":
+                return Kentta.KAKKOSET;
+            case "3":
+                return Kentta.KOLMOSET;
+            case "4":
+                return Kentta.NELOSET;
+            case "5":
+                return Kentta.VITOSET;
+            case "6":
+                return Kentta.KUTOSET;
+            case "7":
+                return Kentta.PARI;
+            case "8":
+                return Kentta.KAKSIPARIA;
+            case "9":
+                return Kentta.KOLMESAMAA;
+            case "10":
+                return Kentta.NELJASAMAA;
+            case "11":
+                return Kentta.PIENISUORA;
+            case "12":
+                return Kentta.SUURISUORA;
+            case "13":
+                return Kentta.TAYSKASI;
+            case "14":
+                return Kentta.YATZY;
+            case "15":
+                return Kentta.SATTUMA;
+            default:
+                return Kentta.VIRHE;
         }
     }
 }

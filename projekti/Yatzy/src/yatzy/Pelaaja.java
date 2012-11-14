@@ -1,6 +1,7 @@
 package yatzy;
 
 import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -28,6 +29,15 @@ public class Pelaaja {
     
     public int getSumma() {
         return pistetaulukko.getSumma();
+    }
+    
+    public boolean peliLoppu() {
+        Set<Kentta> kentat = pistetaulukko.getPisteet().keySet();
+        if ( (kentat.size() == 15 && !kentat.contains(Kentta.BONUS)) ||
+                kentat.size() == 16) {
+            return true;
+        }
+        return false;
     }
     
     public String toString() {

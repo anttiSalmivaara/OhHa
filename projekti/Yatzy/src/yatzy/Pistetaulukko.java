@@ -1,8 +1,7 @@
 package yatzy;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.EnumMap;
+import java.util.Map;
 
 /**
  *

@@ -2,6 +2,7 @@ package ui;
 import java.util.ArrayList;
 import java.util.List;
 import logiikka.Noppa;
+import java.util.Collection;
 /**
  *
  * @author antti
@@ -22,7 +23,7 @@ public class PiirraNopat {
         return alkunopat;
     }
 
-    public String tulostaNopat(List<Noppa> nop) {
+    public String tulostaNopat(Collection<Noppa> nop) {
         StringBuilder sb = new StringBuilder();
         sb.append("┌───────┐ ┌───────┐ ┌───────┐ ┌───────┐ ┌───────┐");
         sb.append("\n");
@@ -51,11 +52,11 @@ public class PiirraNopat {
         for (Noppa n : nop) {
             int nLuku = n.getLuku();
             if (nLuku == 6 || nLuku == 5 || nLuku == 4) {
-                sb.append("│ ●   ● | ");
+                sb.append("│ ●   ● │ ");
             } else if (nLuku == 3 || nLuku == 2) {
                 sb.append("│     ● │ ");
             } else {
-                sb.append("│       | ");
+                sb.append("│       │ ");
             }
         }
         sb.append("\n");
