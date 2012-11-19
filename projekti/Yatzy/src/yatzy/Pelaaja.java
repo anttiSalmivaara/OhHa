@@ -33,13 +33,14 @@ public class Pelaaja {
     
     public boolean peliLoppu() {
         Set<Kentta> kentat = pistetaulukko.getPisteet().keySet();
-        if ( (kentat.size() == 15 && !kentat.contains(Kentta.BONUS)) ||
-                kentat.size() == 16) {
+        if ( (kentat.size() == 16 && !kentat.contains(Kentta.BONUS)) ||
+                kentat.size() == 17) {
             return true;
         }
         return false;
     }
     
+    @Override
     public String toString() {
         return nimi + ": \n" + pistetaulukko.toString();
     }

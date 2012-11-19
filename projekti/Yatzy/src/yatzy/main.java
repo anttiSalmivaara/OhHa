@@ -1,18 +1,18 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package yatzy;
 import ui.Kayttoliittyma;
 import ui.Teksti;
+import gui.*;
+import logiikka.*;
 /**
  *
- * @author antti
+ * @author Antti Salmivaara antti.salmivaara@helsinki.fi
  */
 public class main {
     
    public static void main(String[] args) {
-        Kayttoliittyma gui = new Teksti();
-        gui.kaynnista();
+        Peli peli = new Peli();
+        Graafinen gui = new Graafinen();
+        
+        gui.run();
     }
 }

@@ -1,8 +1,6 @@
 package ui;
-import java.util.ArrayList;
-import java.util.List;
-import logiikka.Noppa;
 import java.util.Collection;
+import logiikka.Noppa;
 /**
  *
  * @author antti

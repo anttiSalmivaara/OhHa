@@ -39,3 +39,6 @@
     Tekstikäyttöliittymän ohjelmointia
   14.00 - 18.40
     Pelilogiikan ja tekstikäyttöliittymän viimeistelyä
+19.11.2012
+  14-17.15
+    Graafisen käyttöliittymän ideointia ja ohjelmoinnin aloitus

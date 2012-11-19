@@ -120,13 +120,6 @@ public class Peli {
     public Map<Integer, Noppa> getNopat() {
         return nopat;
     }
-    public List<Integer> getSilmaluvut() {
-        ArrayList<Integer> palaute = new ArrayList<>();
-        for (Noppa n : nopat.values()) {
-            palaute.add(n.getLuku());
-        }
-        return palaute;
-    }
     
     protected int laskeSumma(Collection<Noppa> nList, int mitaHaetaan) {
         int palaute = 0;

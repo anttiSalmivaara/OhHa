@@ -155,9 +155,9 @@ public class Teksti implements Kayttoliittyma {
         }
         System.out.println("");
     }
-    private String ylaviiva = "┌────────┬────┬────┬────┬────┬────┬────┬─────┬───────┬─────────┬─────────┬──────────┬─────────┬─────────┬─────────┬─────────┬───────┬─────┐";
-    private String valiviiva = "├────────┼────┼────┼────┼────┼────┼────┼─────┼───────┼─────────┼─────────┼──────────┼─────────┼─────────┼─────────┼─────────┼───────┼─────┤";
-    private String alaviiva = "└────────┴────┴────┴────┴────┴────┴────┴─────┴───────┴─────────┴─────────┴──────────┴─────────┴─────────┴─────────┴─────────┴───────┴─────┘";
+    private String ylaviiva = "┌────────┬────┬────┬────┬────┬────┬────┬─────┬───────┬─────────┬──────┬───────┬─────────┬─────────┬─────────┬─────────┬───────┬─────┐";
+    private String valiviiva = "├────────┼────┼────┼────┼────┼────┼────┼─────┼───────┼─────────┼──────┼───────┼─────────┼─────────┼─────────┼─────────┼───────┼─────┤";
+    private String alaviiva = "└────────┴────┴────┴────┴────┴────┴────┴─────┴───────┴─────────┴──────┴───────┴─────────┴─────────┴─────────┴─────────┴───────┴─────┘";
 
     protected final Map<Kentta, String> luoOtsikko() {
         EnumMap<Kentta, String> apuOtsikko;
@@ -171,8 +171,8 @@ public class Teksti implements Kayttoliittyma {
         apuOtsikko.put(Kentta.BONUS, "Bonus");
         apuOtsikko.put(Kentta.PARI, "Pari(7)");
         apuOtsikko.put(Kentta.KAKSIPARIA, "2Paria(8)");
-        apuOtsikko.put(Kentta.KOLMESAMAA, "3Samaa(9)");
-        apuOtsikko.put(Kentta.NELJASAMAA, "4Samaa(10)");
+        apuOtsikko.put(Kentta.KOLMESAMAA, "3 X(9)");
+        apuOtsikko.put(Kentta.NELJASAMAA, "4 X(10)");
         apuOtsikko.put(Kentta.PIENISUORA, "suora(11)");
         apuOtsikko.put(Kentta.SUURISUORA, "SUORA(12)");
         apuOtsikko.put(Kentta.TAYSKASI, "tKäsi(13)");
