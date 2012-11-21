@@ -21,4 +21,3 @@ public class ScoreCardListener implements ActionListener {
          
     }
 }
-}

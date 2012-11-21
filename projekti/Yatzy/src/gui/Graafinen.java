@@ -25,7 +25,7 @@ public class Graafinen implements Runnable {
         frame.setMinimumSize(new Dimension(100 + (100 * peli.getPelaajat().size()) , 500));
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         
-        luoAlkuRuutu(frame.getContentPane());
+        //luoAlkuRuutu(frame.getContentPane());
         frame.setVisible(true);
         
         luoPeliKentta(frame.getContentPane());
@@ -34,10 +34,10 @@ public class Graafinen implements Runnable {
              
     }
     
-    private void luoAlkuRuutu(Container container) {
-        container.setLayout(new BorderLayout());
-        JTextField pelaaja = 
-    }
+//    private void luoAlkuRuutu(Container container) {
+//        container.setLayout(new BorderLayout());
+//        JTextField pelaaja = 
+//    }
     
     private void luoPeliKentta(Container container) {
         container.setLayout(new BorderLayout());

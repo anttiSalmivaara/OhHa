@@ -37,7 +37,7 @@ public class PistetaulukkoTest {
     public void toStringTulostaaOikein() {
         taulukko.asetaPisteet(4, Kentta.KAKKOSET);
         taulukko.asetaPisteet(6, Kentta.KOLMOSET);
-        assertEquals(taulukko.toString(), "KOLMOSET: 6\nKAKKOSET: 4\n");
+        assertEquals(taulukko.toString(), "KAKKOSET: 4\nKOLMOSET: 6\n");
     }
 }
 
