@@ -5,8 +5,8 @@
 package ui;
 
 /**
- *
- * @author antti
+ * Käyttöliittymä-luokka sisältää käyttöliittymän julkisten metodien määrittelyn.
+ * @author Antti Salmivaara antti.salmivaara@helsinki.fi
  */
 public interface Kayttoliittyma {
     

@@ -4,8 +4,12 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- *
+ * Pelaaja-luokka määrittelee pelaajan. Se sisältää nimen, pistetaulukon sekä
+ * metodit näiden asettamiseen ja muokkaamiseen. Pelaaja-luokka tietää myös, onko
+ * peli loppu.
+ * 
  * @author Antti Salmivaara antti.salmivaara@helsinki.fi
+ * @see Pistetaulukko
  */
 public class Pelaaja {
     private Pistetaulukko pistetaulukko;

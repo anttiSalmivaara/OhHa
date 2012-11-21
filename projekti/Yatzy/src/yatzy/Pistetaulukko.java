@@ -4,7 +4,10 @@ import java.util.EnumMap;
 import java.util.Map;
 
 /**
- *
+ * Pistetaulukko on yleinen taulukkoluokka pisteiden säilömiseen enumeraatioiden
+ * avulla. Pistetaulukkoon voidaan asettaa arvoja ja kysyä niitä. Se tietää myös
+ * summa-kentän.
+ * 
  * @author Antti Salmivaara antti.salmivaara@helsinki.fi
  */
 public class Pistetaulukko {

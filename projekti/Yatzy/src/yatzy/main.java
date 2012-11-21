@@ -4,7 +4,8 @@ import ui.Teksti;
 import gui.*;
 import logiikka.*;
 /**
- *
+ * Luokka, joka käynnistää pelin.
+ * 
  * @author Antti Salmivaara antti.salmivaara@helsinki.fi
  */
 public class main {

@@ -2,8 +2,10 @@ package ui;
 import java.util.Collection;
 import logiikka.Noppa;
 /**
- *
- * @author antti
+ * PiirraNopat-luokka sisältää pelin alun "otsikkonoppien" esityksen sekä metodin
+ * noppien esittämiseen tekstikäyttöliittymässä.
+ * 
+ * @author Antti Salmivaara antti.salmivaara@helsinki.fi
  */
 public class PiirraNopat {
     

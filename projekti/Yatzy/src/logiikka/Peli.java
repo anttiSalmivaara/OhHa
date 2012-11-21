@@ -5,7 +5,9 @@ import yatzy.Kentta;
 import yatzy.Pelaaja;
 
 /**
- *
+ * Peli-luokka sisältää Yatzy-pelin toiminallisuuden, pelaajien lisäämisen,
+ * pisteiden kirjaamisen. Luokka välittää nopanheittokäskyt nopille.
+ * 
  * @author Antti Salmivaara antti.salmivaara@helsinki.fi
  */
 public class Peli {

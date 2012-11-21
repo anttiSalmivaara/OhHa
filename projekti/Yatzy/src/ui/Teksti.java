@@ -9,6 +9,8 @@ import yatzy.Kentta;
 import yatzy.Pelaaja;
 
 /**
+ * Teksti-luokka on Yatzy-pelin tekstikäyttöliittymä. Se sisältää käynnistä-metodin
+ * joka aloittaa pelin, sekä metodit pistetaulukon ja noppien tulostamiseen.
  *
  * @author Antti Salmivaara antti.salmivaara@helsinki.fi
  */
@@ -149,7 +151,7 @@ public class Teksti implements Kayttoliittyma {
         System.out.println(alaviiva);
     }
 
-    public void tulostaOtsikko() {
+    protected void tulostaOtsikko() {
         for (Kentta k : otsikko.keySet()) {
             System.out.print(otsikko.get(k) + "│");
         }
