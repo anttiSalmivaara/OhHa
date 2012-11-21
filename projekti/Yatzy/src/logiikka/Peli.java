@@ -51,16 +51,24 @@ public class Peli {
         } else if (mihinKenttaan == Kentta.PARI) {  // pari
             pisteet = laskeSamojenSumma(kirjattavat, 2);
         } else if (mihinKenttaan == Kentta.KAKSIPARIA) {  // kaksi paria
-            Map<Integer, Integer> yhdistelmat = ryhmitteleLuvunMukaan(kirjattavat);
+            
+            int pisteetEkaKierros = laskeSamojenSumma(kirjattavat, 2);
+            int muistiSilmaLuku = pisteetEkaKierros / 2;
+            
+            ArrayList<Noppa> toinenKierros = new ArrayList<>();
             int laskuri = 0;
-            for (int i : yhdistelmat.keySet()) {
-                if (yhdistelmat.get(i) == 2) {
+            
+            for (Noppa n : kirjattavat) {
+                if (n.getLuku() == muistiSilmaLuku && laskuri < 2) {
                     laskuri++;
-                    pisteet += i * yhdistelmat.get(i);
+                } else {
+                    toinenKierros.add(n);
                 }
             }
-            if (laskuri < 2) {
-                pisteet = 0;
+            int pisteetTokaKierros = laskeSamojenSumma(toinenKierros, 2);
+            
+            if (pisteetEkaKierros > 0 && pisteetTokaKierros > 0) {
+                pisteet = pisteetEkaKierros + pisteetTokaKierros;
             }
         } else if (mihinKenttaan == Kentta.KOLMESAMAA) { // kolme samaa
             pisteet = laskeSamojenSumma(kirjattavat, 3);
@@ -71,15 +79,20 @@ public class Peli {
         } else if (mihinKenttaan == Kentta.SUURISUORA) {  // suuri suora
             pisteet = laskeSuora(kirjattavat, 2, 6);
         } else if (mihinKenttaan == Kentta.TAYSKASI) {  // täyskäsi
-            pisteet = laskeSamojenSumma(kirjattavat, 3);
-
-            Map<Integer, Integer> yhdistelmat = ryhmitteleLuvunMukaan(kirjattavat);
-            if (yhdistelmat.values().contains(2)) {
-                for (int i : yhdistelmat.keySet()) {
-                    if (yhdistelmat.get(i) == 2) {
-                        pisteet += i * 2;
-                    }
+            int pisteetEkaKierros = laskeSamojenSumma(kirjattavat, 3);
+            int muistiSilmaLuku = pisteetEkaKierros / 3;
+            ArrayList<Noppa> toinenKierros = new ArrayList<>();
+            int laskuri = 0;
+            for (Noppa n : kirjattavat) {
+                if (n.getLuku() == muistiSilmaLuku && laskuri < 3) {
+                    laskuri++;
+                } else {
+                    toinenKierros.add(n);
                 }
+            }
+            int pisteetTokaKierros = laskeSamojenSumma(toinenKierros, 2);
+            if (pisteetEkaKierros > 0 && pisteetTokaKierros > 0) {
+                pisteet = pisteetEkaKierros + pisteetTokaKierros;
             }
         } else if (mihinKenttaan == Kentta.SATTUMA) {  // sattuma
             for (Noppa n : kirjattavat) {
@@ -142,7 +155,9 @@ public class Peli {
                 vaihtoehdot.add(i * montakoSamaa);
             }
         }
-        return Collections.max(vaihtoehdot);
+        Collections.sort(vaihtoehdot);
+        Collections.reverse(vaihtoehdot);
+        return vaihtoehdot.get(0);
 
     }
 

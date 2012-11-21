@@ -53,23 +53,23 @@ public class PeliTest {
         }
         kakkoset = new ArrayList<>();
         for (int i = 1; i < 6; i++) {
-            ykkoset.add(new HuonoNoppa(2));
+            kakkoset.add(new HuonoNoppa(2));
         }
         kolmoset = new ArrayList<>();
         for (int i = 1; i < 6; i++) {
-            ykkoset.add(new HuonoNoppa(3));
+            kolmoset.add(new HuonoNoppa(3));
         }
         neloset = new ArrayList<>();
         for (int i = 1; i < 6; i++) {
-            ykkoset.add(new HuonoNoppa(4));
+            neloset.add(new HuonoNoppa(4));
         }
         vitoset = new ArrayList<>();
         for (int i = 1; i < 6; i++) {
-            ykkoset.add(new HuonoNoppa(5));
+            vitoset.add(new HuonoNoppa(5));
         }
         kutoset = new ArrayList<>();
         for (int i = 1; i < 6; i++) {
-            ykkoset.add(new HuonoNoppa(6));
+            kutoset.add(new HuonoNoppa(6));
         }
         pSuora = new ArrayList<>();
         for (int i = 1; i < 6; i++) {
@@ -173,7 +173,7 @@ public class PeliTest {
 
     @Test
     public void testKirjaaPisteetPari() throws Exception {
-        peli.kirjaaPisteet(pelaaja, Kentta.KAKKOSET, kutoset);
+        peli.kirjaaPisteet(pelaaja, Kentta.PARI, kutoset);
         assertEquals(12, pelaaja.getSumma());
     }
 
