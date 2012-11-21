@@ -5,21 +5,15 @@
 package logiikka;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
 import yatzy.Kentta;
 import yatzy.Pelaaja;
-import yatzy.Pistetaulukko;
 
 /**
  *
@@ -28,6 +22,16 @@ import yatzy.Pistetaulukko;
 public class PeliTest {
 
     private Peli peli;
+    private Pelaaja pelaaja;
+    private List<Integer> heitettavat;
+    private Collection<Noppa> ykkoset;
+    private Collection<Noppa> kakkoset;
+    private Collection<Noppa> kolmoset;
+    private Collection<Noppa> neloset;
+    private Collection<Noppa> vitoset;
+    private Collection<Noppa> kutoset;
+    private Collection<Noppa> pSuora;
+    private Collection<Noppa> sSuora;
 
     public PeliTest() {
     }
@@ -35,6 +39,46 @@ public class PeliTest {
     @Before
     public void setUp() {
         this.peli = new Peli();
+
+        peli.addPelaaja("testPelaaja");
+        pelaaja = peli.getPelaajat().get(0);
+
+        this.heitettavat = new ArrayList<>();
+        for (int i = 1; i < 6; i++) {
+            this.heitettavat.add(i);
+        }
+        ykkoset = new ArrayList<>();
+        for (int i = 1; i < 6; i++) {
+            ykkoset.add(new HuonoNoppa(1));
+        }
+        kakkoset = new ArrayList<>();
+        for (int i = 1; i < 6; i++) {
+            ykkoset.add(new HuonoNoppa(2));
+        }
+        kolmoset = new ArrayList<>();
+        for (int i = 1; i < 6; i++) {
+            ykkoset.add(new HuonoNoppa(3));
+        }
+        neloset = new ArrayList<>();
+        for (int i = 1; i < 6; i++) {
+            ykkoset.add(new HuonoNoppa(4));
+        }
+        vitoset = new ArrayList<>();
+        for (int i = 1; i < 6; i++) {
+            ykkoset.add(new HuonoNoppa(5));
+        }
+        kutoset = new ArrayList<>();
+        for (int i = 1; i < 6; i++) {
+            ykkoset.add(new HuonoNoppa(6));
+        }
+        pSuora = new ArrayList<>();
+        for (int i = 1; i < 6; i++) {
+            pSuora.add(new HuonoNoppa(i));
+        }
+        sSuora = new ArrayList<>();
+        for (int i = 2; i < 7; i++) {
+            sSuora.add(new HuonoNoppa(i));
+        }
     }
 
     /**
@@ -42,34 +86,24 @@ public class PeliTest {
      */
     @Test
     public void testHeitaNopat() {
-        ArrayList<Integer> heitettavat = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            heitettavat.add(i);
-        }
-        Map result = peli.heitaNopat(heitettavat);
+        Map<Integer, Noppa> result = peli.heitaNopat(heitettavat);
         boolean b = true;
-        for (Iterator it = result.values().iterator(); it.hasNext();) {
-            Noppa n = (Noppa) it;
-            b = 0 < n.getLuku() && 7 > n.getLuku();
+        for (int i = 1; i < 6; i++) {
+            b = b && result.get(i).getLuku() < 7 && result.get(i).getLuku() > 0;
         }
-        assertEquals(true, b);
+        assertTrue(b);
     }
 
     @Test
     public void testHeitaNopat1000Kertaa() {
         boolean b = true;
-        for (int j = 0; 1 < 1000; j++) {
-            ArrayList<Integer> heitettavat = new ArrayList<>();
-            for (int i = 0; i < 5; i++) {
-                heitettavat.add(i);
+        for (int j = 0; j < 1000; j++) {
+            Map<Integer, Noppa> result = peli.heitaNopat(heitettavat);
+            for (int i = 1; i < 6; i++) {
+                b = b && result.get(i).getLuku() < 7 && result.get(i).getLuku() > 0;
             }
-            Map result = peli.heitaNopat(heitettavat);
-            for (Iterator it = result.values().iterator(); it.hasNext();) {
-                Noppa n = (Noppa) it;
-                b = 0 < n.getLuku() && 7 > n.getLuku();
-            }
-            assertEquals(true, b);
         }
+        assertTrue(b);
     }
 
     /**
@@ -89,7 +123,7 @@ public class PeliTest {
     @Test
     public void testHeitaKaikkiNopat1000Kertaa() {
         boolean b = true;
-        for (int j = 0; 1 < 1000; j++) {
+        for (int j = 0; j < 1000; j++) {
             Map<Integer, Noppa> result = peli.heitaKaikkiNopat();
             for (int i = 1; i < 6; i++) {
                 b = b && result.get(i).getLuku() < 7 && result.get(i).getLuku() > 0;
@@ -102,35 +136,81 @@ public class PeliTest {
      * Test of kirjaaPisteet method, of class Peli.
      */
     @Test
-    public void testKirjaaPisteet() throws Exception {
-        peli.addPelaaja("testPelaaja");
-        Pelaaja pelaaja = peli.getPelaajat().get(0);
-        peli.heitaKaikkiNopat();
-        Collection<Noppa> kirjattavat = peli.getNopat().values();
-        peli.kirjaaPisteet(pelaaja, Kentta.SATTUMA, kirjattavat);
-        // TODO review the generated test code and remove the default call to fail.
-        int summa = 0;
-        for (Noppa n : kirjattavat) {
-            summa += n.getLuku();
-        }
-        assertEquals(peli.getPelaajat().get(0).getPisteet().get(Kentta.SATTUMA), summa);
+    public void testKirjaaPisteetYkkoset() throws Exception {
+        peli.kirjaaPisteet(pelaaja, Kentta.YKKOSET, ykkoset);
+        assertEquals(5, pelaaja.getSumma());
     }
 
     @Test
-    public void testKirjaaPisteetKaikkiinKenttiin() throws Exception {
-        peli.addPelaaja("testPelaaja");
-        Pelaaja pelaaja = peli.getPelaajat().get(0);
-        Collection<Noppa> kirjattavat = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            kirjattavat.add(new HuonoNoppa(6));
-        }
+    public void testKirjaaPisteetKakkoset() throws Exception {
+        peli.kirjaaPisteet(pelaaja, Kentta.KAKKOSET, kakkoset);
+        assertEquals(10, pelaaja.getSumma());
+    }
 
-        for (Kentta k : Kentta.values()) {
-            if (k != Kentta.VIRHE && k != Kentta.SUMMA && k != Kentta.BONUS) {
-                peli.kirjaaPisteet(pelaaja, k, kirjattavat);
-            }
-        }
-        assertEquals(peli.getPelaajat().get(0).getSumma(), 218);
+    @Test
+    public void testKirjaaPisteetKolmoset() throws Exception {
+        peli.kirjaaPisteet(pelaaja, Kentta.KOLMOSET, kolmoset);
+        assertEquals(15, pelaaja.getSumma());
+    }
+
+    @Test
+    public void testKirjaaPisteetNeloset() throws Exception {
+        peli.kirjaaPisteet(pelaaja, Kentta.NELOSET, neloset);
+        assertEquals(20, pelaaja.getSumma());
+    }
+
+    @Test
+    public void testKirjaaPisteetVitoset() throws Exception {
+        peli.kirjaaPisteet(pelaaja, Kentta.VITOSET, vitoset);
+        assertEquals(25, pelaaja.getSumma());
+    }
+
+    @Test
+    public void testKirjaaPisteetKutoset() throws Exception {
+        peli.kirjaaPisteet(pelaaja, Kentta.KUTOSET, kutoset);
+        assertEquals(30, pelaaja.getSumma());
+    }
+
+    @Test
+    public void testKirjaaPisteetPari() throws Exception {
+        peli.kirjaaPisteet(pelaaja, Kentta.KAKKOSET, kutoset);
+        assertEquals(12, pelaaja.getSumma());
+    }
+
+    @Test
+    public void testKirjaaPisteetKaksiParia() throws Exception {
+        peli.kirjaaPisteet(pelaaja, Kentta.KAKSIPARIA, kutoset);
+        assertEquals(24, pelaaja.getSumma());
+    }
+
+    @Test
+    public void testKirjaaPisteetPieniSuora() throws Exception {
+        peli.kirjaaPisteet(pelaaja, Kentta.PIENISUORA, pSuora);
+        assertEquals(15, pelaaja.getSumma());
+    }
+
+    @Test
+    public void testKirjaaPisteetSuuriSuora() throws Exception {
+        peli.kirjaaPisteet(pelaaja, Kentta.SUURISUORA, sSuora);
+        assertEquals(20, pelaaja.getSumma());
+    }
+
+    @Test
+    public void testaaKirjaaPisteetTayskasi() throws Exception {
+        peli.kirjaaPisteet(pelaaja, Kentta.TAYSKASI, kutoset);
+        assertEquals(30, pelaaja.getSumma());
+    }
+
+    @Test
+    public void testaaKirjaaPisteetYatzy() throws Exception {
+        peli.kirjaaPisteet(pelaaja, Kentta.YATZY, ykkoset);
+        assertEquals(50, pelaaja.getSumma());
+    }
+
+    @Test
+    public void testaaKirjaaPisteetSattuma() throws Exception {
+        peli.kirjaaPisteet(pelaaja, Kentta.SATTUMA, kakkoset);
+        assertEquals(10, pelaaja.getSumma());
     }
 
     /**
@@ -138,16 +218,9 @@ public class PeliTest {
      */
     @Test
     public void testPeliLoppu() throws Exception {
-        peli.addPelaaja("testPelaaja");
-        Pelaaja pelaaja = peli.getPelaajat().get(0);
-        Collection<Noppa> kirjattavat = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            kirjattavat.add(new HuonoNoppa(6));
-        }
-
         for (Kentta k : Kentta.values()) {
             if (k != Kentta.VIRHE && k != Kentta.SUMMA && k != Kentta.BONUS) {
-                peli.kirjaaPisteet(pelaaja, k, kirjattavat);
+                peli.kirjaaPisteet(pelaaja, k, ykkoset);
             }
         }
         assertTrue(peli.peliLoppu());
@@ -158,17 +231,15 @@ public class PeliTest {
      */
     @Test
     public void testAddPelaaja() {
-        peli.addPelaaja("pelaaja");
-        // TODO review the generated test code and remove the default call to fail.
-        assertTrue(!peli.getPelaajat().isEmpty() && peli.getPelaajat().get(0).getNimi().equals("pelaaja"));
+        assertTrue(!peli.getPelaajat().isEmpty() && peli.getPelaajat().get(0).getNimi().equals("testPelaaja"));
     }
 
     @Test
     public void testAdd1000Pelaajaa() {
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 999; i++) {
             peli.addPelaaja("" + i);
         }
-        assertEquals(peli.getPelaajat().size(), 1000);
+        assertEquals(1000, peli.getPelaajat().size());
     }
 
     /**
@@ -176,14 +247,13 @@ public class PeliTest {
      */
     @Test
     public void testGetPelaajat() {
-        peli.addPelaaja("yksi");
-        assertEquals(peli.getPelaajat().get(0).getNimi(), "yksi");
+        assertEquals("testPelaaja", peli.getPelaajat().get(0).getNimi());
         // TODO review the generated test code and remove the default call to fail.
     }
 
     @Test
     public void testGet1000Pelaajaa() {
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 999; i++) {
             peli.addPelaaja("" + i);
         }
         assertEquals(peli.getPelaajat().size(), 1000);
@@ -191,10 +261,10 @@ public class PeliTest {
 
     @Test
     public void testAdd1000PelaajaaGetNimiOikein() {
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 1; i < 1000; i++) {
             peli.addPelaaja("" + i);
         }
-        assertEquals(peli.getPelaajat().get(999).getNimi(), "999");
+        assertEquals("999", peli.getPelaajat().get(999).getNimi());
     }
 
     /**
@@ -336,6 +406,17 @@ public class PeliTest {
         }
         peli.laskeBonusPisteet(peli.getPelaajat().get(0));
         assertEquals(50, peli.getPelaajat().get(0).getPisteet().get(Kentta.BONUS));
+    }
+
+    private void kirjaaPisteet(Peli pp, Collection<Noppa> nopat, Pelaaja p, Kentta k) {
+        try {
+            pp.kirjaaPisteet(p, k, nopat);
+
+
+
+
+        } catch (Exception e) {
+        }
     }
 }
 

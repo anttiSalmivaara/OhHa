@@ -35,7 +35,7 @@ public class Peli {
     public void kirjaaPisteet(Pelaaja nytVuorossa,
             Kentta mihinKenttaan,
             Collection<Noppa> kirjattavat) throws Exception {
-        int pisteet = 0;
+        int pisteet = 0;   
         if (mihinKenttaan == Kentta.YKKOSET) {       // ykköset
             pisteet = laskeSumma(kirjattavat, 1);
         } else if (mihinKenttaan == Kentta.KAKKOSET) {  // kakkoset
@@ -168,15 +168,13 @@ public class Peli {
     }
 
     protected int laskeSuora(Collection<Noppa> nList, int mista, int mihin) {
-        Map<Integer, Integer> vaihtoehdot = ryhmitteleLuvunMukaan(nList);
+        Map<Integer, Integer> ryhmitelty = ryhmitteleLuvunMukaan(nList);
         ArrayList<Integer> silmaluvut = new ArrayList<>();
-        for (int i : vaihtoehdot.keySet()) {
-            if (vaihtoehdot.get(i) > 1) {
+        for (int i : ryhmitelty.keySet()) {
+            if (ryhmitelty.get(i) > 1) {
                 return 0;
-            } else if (vaihtoehdot.get(i) == 1) {
+            } else if (ryhmitelty.get(i) == 1) {
                 silmaluvut.add(i);
-            } else {
-                silmaluvut.add(-1);
             }
         }
         if (Collections.min(silmaluvut) > mista) {
@@ -185,7 +183,7 @@ public class Peli {
             return 0;
         } else {
             int palaute = 0;
-            for (int i = mista; i <= mihin; i++) {
+            for (int i : silmaluvut) {
                 palaute += i;
             }
             return palaute;
