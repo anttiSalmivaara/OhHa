@@ -1,10 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package gui;
 
-import java.awt.CardLayout;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,27 +15,32 @@ import logiikka.Peli;
 public class HeitaListener implements ActionListener {
     
     private Peli peli;
-    private CardLayout cl;
-    private Container c;
+    private JPanel nopat;
+    private PelaajaVuoro pv;
+    private int ovelaLaskuri;
  
-    public HeitaListener(Peli peli, Container c) {
+    public HeitaListener(PelaajaVuoro pv, JPanel nopat, Peli peli) {
         this.peli = peli;
-        this.cl = (CardLayout) ((JPanel) c.getComponent(1)).getLayout();
-        this.c = c;
+        this.nopat = nopat;
+        this.pv = pv;
+        this.ovelaLaskuri = 0;
     }
     
     @Override
     public void actionPerformed(ActionEvent ae) {
-        peli.heitaNopat(getHeitettavat(c));
-        this.cl.show((Container) c.getComponent(1), "Varsinainen peli");
+        peli.heitaNopat(getHeitettavat());
+        if (ovelaLaskuri == 0) {
+            pv.alusta();
+        }
     }
     
-    private List<Integer> getHeitettavat(Container co) {
+    private List<Integer> getHeitettavat() {
         ArrayList<Integer> palaute = new ArrayList<>();
-        JPanel apuri = (JPanel) co.getComponent(0);
+        GraafNoppa apuri;
         for (int i = 0; i < 5; i++) {
-            if (((GraafNoppa) apuri.getComponent(i)).isSelected()) {
-                palaute.add(i + 1);
+            apuri = (GraafNoppa) nopat.getComponent(i);
+            if (apuri.isSelected() ) {
+                palaute.add(i+1);
             }
         }
         return palaute;

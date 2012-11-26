@@ -13,14 +13,20 @@ public class Graafinen implements Runnable {
 
     private JFrame frame;
     private Peli peli;
-    private CardLayout c;
+    private JPanel taulukko;
+    private JPanel alaOsa;
+    private JPanel nopat;
     private NoppaIconMaker ikonit;
-
+    private PelaajaVuoro pv;
+    
     public Graafinen(Peli peli) {
         this.peli = peli;
-        this.c = new CardLayout();
+        this.taulukko = taulukko();
+        this.alaOsa = alaOsa();
+        this.pv = new PelaajaVuoro(taulukko, peli);
         try {
             this.ikonit = new NoppaIconMaker();
+            this.nopat = nopat();
         } catch (Exception e) {
             System.out.println(e.toString());
         }
@@ -41,11 +47,11 @@ public class Graafinen implements Runnable {
 
     private void luoRuudut(Container container) throws Exception {
         container.setLayout(new BorderLayout());
-        container.add(this.nopat(), BorderLayout.NORTH);
-        container.add(this.alaOsa(), BorderLayout.CENTER);
+        container.add(nopat, BorderLayout.NORTH);
+        container.add(alaOsa, BorderLayout.CENTER);
 
         JButton heita = new JButton("Heitä!");
-        heita.addActionListener(new HeitaListener(peli, container));
+        heita.addActionListener(new HeitaListener(pv, nopat, peli));
 
         container.add(heita, BorderLayout.SOUTH);
     }
@@ -63,14 +69,14 @@ public class Graafinen implements Runnable {
     }
 
     private JPanel alaOsa() {
-        final String ALKU = "Pelaajan lisäys";
-        final String PELI = "Varsinainen peli";
+        final String ALKU = "alku";
+        final String PELI = "peli";
 
         JPanel palaute = new JPanel();
-        palaute.setLayout(c);
+        palaute.setLayout(new CardLayout());
 
         JPanel alkuruutu = luoAlkuRuutu();
-        JPanel peliruutu = taulukko();
+        JPanel peliruutu = taulukko;
 
         palaute.add(alkuruutu, ALKU);
         palaute.add(peliruutu, PELI);
@@ -82,18 +88,19 @@ public class Graafinen implements Runnable {
         JPanel palaute = new JPanel();
         palaute.setLayout(new GridLayout(8, 1));
 
-        JLabel p1 = new JLabel("Pelaaja 1");
-        JTextField pelaaja1 = new JTextField();
+        JTextField pelaaja1 = new JTextField("Pelaaja 1");
 
-        JLabel p2 = new JLabel("Pelaaja 2");
-        JTextField pelaaja2 = new JTextField();
+        JTextField pelaaja2 = new JTextField("Pelaaja 2");
+        
+        JButton addPlayer = new JButton("Lisää pelaajat");
 
-        palaute.add(p1);
+        palaute.add(new JLabel());
         palaute.add(pelaaja1);
-        palaute.add(p2);
+        palaute.add(new JLabel());
         palaute.add(pelaaja2);
         palaute.add(new JLabel());
-        palaute.add(new JLabel());
+        addPlayer.addActionListener(new PelaajanLisaysListener(palaute, alaOsa, pv, taulukko, peli));
+        palaute.add(addPlayer);
         palaute.add(new JLabel());
 
         return palaute;
@@ -115,23 +122,23 @@ public class Graafinen implements Runnable {
         palaute.setLayout(new GridLayout(18, 1));
 
         palaute.add(new KenttaOtsikko("Pelaaja " + i));
-        palaute.add(new KenttaNappi(frame, peli, Kentta.YKKOSET));
-        palaute.add(new KenttaNappi(frame, peli, Kentta.KAKKOSET));
-        palaute.add(new KenttaNappi(frame, peli, Kentta.KOLMOSET));
-        palaute.add(new KenttaNappi(frame, peli, Kentta.NELOSET));
-        palaute.add(new KenttaNappi(frame, peli, Kentta.VITOSET));
-        palaute.add(new KenttaNappi(frame, peli, Kentta.KUTOSET));
-        palaute.add(new KenttaOtsikko(""));
-        palaute.add(new KenttaNappi(frame, peli, Kentta.PARI));
-        palaute.add(new KenttaNappi(frame, peli, Kentta.KAKSIPARIA));
-        palaute.add(new KenttaNappi(frame, peli, Kentta.KOLMESAMAA));
-        palaute.add(new KenttaNappi(frame, peli, Kentta.NELJASAMAA));
-        palaute.add(new KenttaNappi(frame, peli, Kentta.PIENISUORA));
-        palaute.add(new KenttaNappi(frame, peli, Kentta.SUURISUORA));
-        palaute.add(new KenttaNappi(frame, peli, Kentta.TAYSKASI));
-        palaute.add(new KenttaNappi(frame, peli, Kentta.YATZY));
-        palaute.add(new KenttaNappi(frame, peli, Kentta.SATTUMA));
-        palaute.add(new KenttaOtsikko(""));
+        palaute.add(new KenttaNappi(pv, palaute, peli, Kentta.YKKOSET));
+        palaute.add(new KenttaNappi(pv, palaute, peli, Kentta.KAKKOSET));
+        palaute.add(new KenttaNappi(pv, palaute, peli, Kentta.KOLMOSET));
+        palaute.add(new KenttaNappi(pv, palaute, peli, Kentta.NELOSET));
+        palaute.add(new KenttaNappi(pv, palaute, peli, Kentta.VITOSET));
+        palaute.add(new KenttaNappi(pv, palaute, peli, Kentta.KUTOSET));
+        palaute.add(new KenttaNappi(pv, palaute, peli, Kentta.BONUS));
+        palaute.add(new KenttaNappi(pv, palaute, peli, Kentta.PARI));
+        palaute.add(new KenttaNappi(pv, palaute, peli, Kentta.KAKSIPARIA));
+        palaute.add(new KenttaNappi(pv, palaute, peli, Kentta.KOLMESAMAA));
+        palaute.add(new KenttaNappi(pv, palaute, peli, Kentta.NELJASAMAA));
+        palaute.add(new KenttaNappi(pv, palaute, peli, Kentta.PIENISUORA));
+        palaute.add(new KenttaNappi(pv, palaute, peli, Kentta.SUURISUORA));
+        palaute.add(new KenttaNappi(pv, palaute, peli, Kentta.TAYSKASI));
+        palaute.add(new KenttaNappi(pv, palaute, peli, Kentta.YATZY));
+        palaute.add(new KenttaNappi(pv, palaute, peli, Kentta.SATTUMA));
+        palaute.add(new KenttaNappi(pv, palaute, peli, Kentta.SUMMA));
 
         return palaute;
     }

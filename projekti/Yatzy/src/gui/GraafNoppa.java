@@ -1,7 +1,6 @@
 package gui;
 
 import java.awt.Dimension;
-import java.util.List;
 import javax.swing.Icon;
 import javax.swing.JToggleButton;
 
