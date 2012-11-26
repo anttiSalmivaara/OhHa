@@ -1,184 +1,165 @@
-
 package gui;
 
 import java.awt.*;
 import javax.swing.*;
 import logiikka.*;
 import yatzy.Kentta;
-import yatzy.Pelaaja;
+
 /**
  *
  * @author Antti Salmivaara antti.salmivaara@helsinki.fi
  */
 public class Graafinen implements Runnable {
-    
+
     private JFrame frame;
     private Peli peli;
-    
+    private CardLayout c;
+    private NoppaIconMaker ikonit;
+
     public Graafinen(Peli peli) {
         this.peli = peli;
+        this.c = new CardLayout();
+        try {
+            this.ikonit = new NoppaIconMaker();
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
     }
-    
-    @Override
-    public void run(){
-        frame = new JFrame("Yatzy v.1");
-        frame.setMinimumSize(new Dimension(100 + (100 * peli.getPelaajat().size()) , 500));
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        
-        //luoAlkuRuutu(frame.getContentPane());
-        frame.setVisible(true);
-        
-        luoPeliKentta(frame.getContentPane());
-        
-        frame.setVisible(true);
-             
-    }
-    
-//    private void luoAlkuRuutu(Container container) {
-//        container.setLayout(new BorderLayout());
-//        JTextField pelaaja = 
-//    }
-    
-    private void luoPeliKentta(Container container) {
-        container.setLayout(new BorderLayout());
-        container.setMinimumSize(new Dimension(250, 200));
-        JPanel nopat = nopat();
-        container.add(nopat, BorderLayout.NORTH);
-        JPanel taulukko = taulukko();
-        container.add(taulukko, BorderLayout.CENTER);
-        JButton heitaNopat = new JButton("Heitä!");
-        container.add(heitaNopat, BorderLayout.SOUTH);
-    }
-    
-    private JPanel nopat() {
-        JPanel palaute = new JPanel();
-        palaute.setLayout(new GridLayout(1,5));
 
-        JButton noppa1 = new JButton("┌───────┐\n│       │\n│   Y   │\n│       │\n└───────┘");
-        JButton noppa2 = new JButton("┌───────┐\n│       │\n│   A   │\n│       │\n└───────┘");
-        JButton noppa3 = new JButton("┌───────┐\n│       │\n│   T   │\n│       │\n└───────┘");
-        JButton noppa4 = new JButton("┌───────┐\n│       │\n│   Z   │\n│       │\n└───────┘");
-        JButton noppa5 = new JButton("┌───────┐\n│       │\n│   Y   │\n│       │\n└───────┘");
-        
-        noppa1.addActionListener(new NoppaListener());
-        noppa2.addActionListener(new NoppaListener());
-        noppa3.addActionListener(new NoppaListener());
-        noppa4.addActionListener(new NoppaListener());
-        noppa5.addActionListener(new NoppaListener());
-        
-        palaute.add(noppa1);
-        palaute.add(noppa2);
-        palaute.add(noppa3);
-        palaute.add(noppa4);
-        palaute.add(noppa5);
-        
+    @Override
+    public void run() {
+        frame = new JFrame("Yatzy v.1");
+        frame.setMinimumSize(new Dimension(400, 500));
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        try {
+            luoRuudut(frame.getContentPane());
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+        frame.setVisible(true);
+    }
+
+    private void luoRuudut(Container container) throws Exception {
+        container.setLayout(new BorderLayout());
+        container.add(this.nopat(), BorderLayout.NORTH);
+        container.add(this.alaOsa(), BorderLayout.CENTER);
+
+        JButton heita = new JButton("Heitä!");
+        heita.addActionListener(new HeitaListener(peli, container));
+
+        container.add(heita, BorderLayout.SOUTH);
+    }
+
+    private JPanel nopat() throws Exception {
+        JPanel palaute = new JPanel();
+        palaute.setLayout(new GridLayout(1, 5));
+
+        for (int i = 0; i < 5; i++) {
+            palaute.add(new GraafNoppa(ikonit.getIcon(i + 1)));
+        }
+
+        return palaute;
+
+    }
+
+    private JPanel alaOsa() {
+        final String ALKU = "Pelaajan lisäys";
+        final String PELI = "Varsinainen peli";
+
+        JPanel palaute = new JPanel();
+        palaute.setLayout(c);
+
+        JPanel alkuruutu = luoAlkuRuutu();
+        JPanel peliruutu = taulukko();
+
+        palaute.add(alkuruutu, ALKU);
+        palaute.add(peliruutu, PELI);
+
         return palaute;
     }
-    
+
+    private JPanel luoAlkuRuutu() {
+        JPanel palaute = new JPanel();
+        palaute.setLayout(new GridLayout(8, 1));
+
+        JLabel p1 = new JLabel("Pelaaja 1");
+        JTextField pelaaja1 = new JTextField();
+
+        JLabel p2 = new JLabel("Pelaaja 2");
+        JTextField pelaaja2 = new JTextField();
+
+        palaute.add(p1);
+        palaute.add(pelaaja1);
+        palaute.add(p2);
+        palaute.add(pelaaja2);
+        palaute.add(new JLabel());
+        palaute.add(new JLabel());
+        palaute.add(new JLabel());
+
+        return palaute;
+    }
+
     private JPanel taulukko() {
         JPanel palaute = new JPanel();
-        palaute.setLayout(new GridLayout(1, 1 + peli.getPelaajat().size()));
-        palaute.setMinimumSize(new Dimension(20 + (peli.getPelaajat().size() * 20), 10));
-        
+        palaute.setLayout(new GridLayout(1, 3));
+
         palaute.add(this.luoKenttaOtsikot());
-        
-        for (Pelaaja p : peli.getPelaajat()) {
-            palaute.add(this.luoYhdenPelaajanTaulukko(p.getNimi()));
-        }
-        return palaute;
-    }
-    
-    private JPanel luoYhdenPelaajanTaulukko(String nimi) {
-        JPanel palaute = new JPanel();
-        palaute.setLayout(new GridLayout(18,1));
-        palaute.setMinimumSize(new Dimension(25, 200));
-        
-        
-        JTextArea nimiKentta = new JTextArea(nimi);
-        JButton ykkoset = new KenttaNappi(Kentta.YKKOSET);
-        JButton kakkoset = new KenttaNappi(Kentta.KAKKOSET);
-        JButton kolmoset = new KenttaNappi(Kentta.KOLMOSET);
-        JButton neloset = new KenttaNappi(Kentta.NELOSET);
-        JButton vitoset = new KenttaNappi(Kentta.VITOSET);
-        JButton kutoset = new KenttaNappi(Kentta.KUTOSET);
-        JTextArea bonus = new JTextArea();
-        JButton pari = new KenttaNappi(Kentta.PARI);
-        JButton kaksiparia = new KenttaNappi(Kentta.KAKSIPARIA);
-        JButton kolmesamaa = new KenttaNappi(Kentta.KOLMESAMAA);
-        JButton neljasamaa = new KenttaNappi(Kentta.NELJASAMAA);
-        JButton pienisuora = new KenttaNappi(Kentta.PIENISUORA);
-        JButton suurisuora = new KenttaNappi(Kentta.SUURISUORA);
-        JButton tayskasi = new KenttaNappi(Kentta.TAYSKASI);
-        JButton yatzy = new KenttaNappi(Kentta.YATZY);
-        JButton sattuma = new KenttaNappi(Kentta.SATTUMA);
-        JTextArea summa = new JTextArea();
-        
-        palaute.add(nimiKentta);
-        palaute.add(ykkoset);
-        palaute.add(kakkoset);
-        palaute.add(kolmoset);
-        palaute.add(neloset);
-        palaute.add(vitoset);
-        palaute.add(kutoset);
-        palaute.add(bonus);
-        palaute.add(pari);
-        palaute.add(kaksiparia);
-        palaute.add(kolmesamaa);
-        palaute.add(neljasamaa);
-        palaute.add(pienisuora);
-        palaute.add(suurisuora);
-        palaute.add(tayskasi);
-        palaute.add(yatzy);
-        palaute.add(sattuma);
-        palaute.add(summa);
+        palaute.add(this.luoYhdenPelaajanTaulukko(1));
+        palaute.add(this.luoYhdenPelaajanTaulukko(2));
 
         return palaute;
     }
-    
+
+    private JPanel luoYhdenPelaajanTaulukko(int i) {
+        JPanel palaute = new JPanel();
+        palaute.setLayout(new GridLayout(18, 1));
+
+        palaute.add(new KenttaOtsikko("Pelaaja " + i));
+        palaute.add(new KenttaNappi(frame, peli, Kentta.YKKOSET));
+        palaute.add(new KenttaNappi(frame, peli, Kentta.KAKKOSET));
+        palaute.add(new KenttaNappi(frame, peli, Kentta.KOLMOSET));
+        palaute.add(new KenttaNappi(frame, peli, Kentta.NELOSET));
+        palaute.add(new KenttaNappi(frame, peli, Kentta.VITOSET));
+        palaute.add(new KenttaNappi(frame, peli, Kentta.KUTOSET));
+        palaute.add(new KenttaOtsikko(""));
+        palaute.add(new KenttaNappi(frame, peli, Kentta.PARI));
+        palaute.add(new KenttaNappi(frame, peli, Kentta.KAKSIPARIA));
+        palaute.add(new KenttaNappi(frame, peli, Kentta.KOLMESAMAA));
+        palaute.add(new KenttaNappi(frame, peli, Kentta.NELJASAMAA));
+        palaute.add(new KenttaNappi(frame, peli, Kentta.PIENISUORA));
+        palaute.add(new KenttaNappi(frame, peli, Kentta.SUURISUORA));
+        palaute.add(new KenttaNappi(frame, peli, Kentta.TAYSKASI));
+        palaute.add(new KenttaNappi(frame, peli, Kentta.YATZY));
+        palaute.add(new KenttaNappi(frame, peli, Kentta.SATTUMA));
+        palaute.add(new KenttaOtsikko(""));
+
+        return palaute;
+    }
+
     private JPanel luoKenttaOtsikot() {
         JPanel palaute = new JPanel();
-        palaute.setLayout(new GridLayout(18,1));
-        palaute.setMinimumSize(new Dimension(25, 200));
-        
-        JTextArea nimiKentta = new JTextArea("Nimi");
-        JTextArea ykkoset = new JTextArea("1");
+        palaute.setLayout(new GridLayout(18, 1));
 
-        JTextArea kakkoset = new JTextArea("2");
-        JTextArea kolmoset = new JTextArea("3");
-        JTextArea neloset = new JTextArea("4");
-        JTextArea vitoset = new JTextArea("5");
-        JTextArea kutoset = new JTextArea("6");
-        JTextArea bonus = new JTextArea("Bonus");
-        JTextArea pari = new JTextArea("Pari");
-        JTextArea kaksiparia = new JTextArea("2 paria");
-        JTextArea kolmesamaa = new JTextArea("3 samaa");
-        JTextArea neljasamaa = new JTextArea("4 samaa");
-        JTextArea pienisuora = new JTextArea("suora");
-        JTextArea suurisuora = new JTextArea("SUORA");
-        JTextArea tayskasi = new JTextArea("Täyskäsi");
-        JTextArea yatzy = new JTextArea("Yatzy");
-        JTextArea sattuma = new JTextArea("Sattuma");
-        JTextArea summa = new JTextArea("Summa");
-        
-        palaute.add(nimiKentta);
-        palaute.add(ykkoset);
-        palaute.add(kakkoset);
-        palaute.add(kolmoset);
-        palaute.add(neloset);
-        palaute.add(vitoset);
-        palaute.add(kutoset);
-        palaute.add(bonus);
-        palaute.add(pari);
-        palaute.add(kaksiparia);
-        palaute.add(kolmesamaa);
-        palaute.add(neljasamaa);
-        palaute.add(pienisuora);
-        palaute.add(suurisuora);
-        palaute.add(tayskasi);
-        palaute.add(yatzy);
-        palaute.add(sattuma);
-        palaute.add(summa);
-        
+        palaute.add(new KenttaOtsikko("Nimi"));
+        palaute.add(new KenttaOtsikko("1"));
+
+        palaute.add(new KenttaOtsikko("2"));
+        palaute.add(new KenttaOtsikko("3"));
+        palaute.add(new KenttaOtsikko("4"));
+        palaute.add(new KenttaOtsikko("5"));
+        palaute.add(new KenttaOtsikko("6"));
+        palaute.add(new KenttaOtsikko("Bonus"));
+        palaute.add(new KenttaOtsikko("Pari"));
+        palaute.add(new KenttaOtsikko("2 paria"));
+        palaute.add(new KenttaOtsikko("3 samaa"));
+        palaute.add(new KenttaOtsikko("4 samaa"));
+        palaute.add(new KenttaOtsikko("suora"));
+        palaute.add(new KenttaOtsikko("SUORA"));
+        palaute.add(new KenttaOtsikko("Täyskäsi"));
+        palaute.add(new KenttaOtsikko("Yatzy"));
+        palaute.add(new KenttaOtsikko("Sattuma"));
+        palaute.add(new KenttaOtsikko("Summa"));
+
         return palaute;
     }
 }

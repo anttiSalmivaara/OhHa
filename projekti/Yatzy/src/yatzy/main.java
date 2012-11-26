@@ -12,8 +12,8 @@ public class main {
     
    public static void main(String[] args) {
         Peli peli = new Peli();
-        Teksti ui = new Teksti();
+        Graafinen ui = new Graafinen(peli);
         
-        ui.kaynnista();
+        ui.run();
     }
 }

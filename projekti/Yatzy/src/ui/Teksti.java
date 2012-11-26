@@ -29,7 +29,7 @@ public class Teksti implements Kayttoliittyma {
     }
 
     @Override
-    public void kaynnista() {
+    public void run() {
 
         System.out.println(nopat.alkuNopat());
 

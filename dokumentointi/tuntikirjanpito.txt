@@ -53,3 +53,6 @@
     Testien ohjelmointia Peli-luokalle. Testien huomaamien virheiden korjausta.
   18.00 - 21.30
     Uusi luokkakaavio. Sekvenssikaavio. JavaDoc-kommentointia.
+26.11.2012
+  15-20.40
+    Graafisen käyttöliittymän ohjelmointia.

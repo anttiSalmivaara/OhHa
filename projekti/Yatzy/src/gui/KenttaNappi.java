@@ -1,6 +1,8 @@
 package gui;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
+import logiikka.Peli;
 import yatzy.Kentta;
 
 /**
@@ -11,24 +13,9 @@ public class KenttaNappi extends JButton {
     
     private Kentta kentta;
     
-    public KenttaNappi(Kentta kentta) {
+    public KenttaNappi(JFrame frame, Peli peli, Kentta kentta) {
         super();
         this.kentta = kentta;
-    }
-    
-    public Kentta getKentta() {
-        return kentta;
-    }
-    
-    public void setPisteet(int pisteet) {
-        super.setText(""+ pisteet);
-    }
-    
-    public void setActive() {
-        super.setEnabled(true);
-    }
-    
-    public void setPassive() {
-        super.setEnabled(false);
+        super.addActionListener(new ScoreCardListener(frame, peli, this.kentta));
     }
 }

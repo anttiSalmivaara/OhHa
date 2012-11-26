@@ -10,7 +10,7 @@ package ui;
  */
 public interface Kayttoliittyma {
     
-    public void kaynnista();
+    public void run();
     public void tulostaTaulukko();
     public void tulostaNopat();
 }
