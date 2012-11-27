@@ -5,10 +5,12 @@ import yatzy.Kentta;
 import yatzy.Pelaaja;
 
 /**
- * Peli-luokka sisältää Yatzy-pelin toiminallisuuden, pelaajien lisäämisen,
- * pisteiden kirjaamisen. Luokka välittää nopanheittokäskyt nopille.
+ * Peli-luokka sisältää Yatzy-pelin toiminallisuuden.
  * 
- * @author Antti Salmivaara antti.salmivaara@helsinki.fi
+ * Luokka huolehtii pelaajien lisäämisestä, pisteiden kirjaamisesta ja 
+ * välittää nopanheittokäskyt nopille.
+ * 
+ * @author Antti Salmivaara <antti.salmivaara@helsinki.fi>
  */
 public class Peli {
 
@@ -22,7 +24,17 @@ public class Peli {
             this.nopat.put(i, new Noppa());
         }
     }
-
+    
+    /**
+     * Metodi heittää nopat.
+     * 
+     * Metodi ottaa vastaan listan kokonaislukuja, jotka vastaavat noppa-olioita.
+     * Metodi palauttaa kuitenkin kaikki nopat Integer-Noppa-kuvauksena, jossa
+     * Integer vastaa nopan järjestysnumeroa.
+     * 
+     * @param heitettavat Lista kokonaislukuja, joka kertoo, mitkä nopat heitetään.
+     * @return Integer-Noppa-kuvaus, joka sisältää kaikki nopat.
+     */
     public Map<Integer, Noppa> heitaNopat(List<Integer> heitettavat) {
         for (int n : heitettavat) {
             nopat.get(n).heita();
@@ -30,37 +42,57 @@ public class Peli {
         return nopat;
     }
 
+    /**
+     * Apumetodi joka heittää suoraan kaikki nopat.
+     * 
+     * @return Integer-Noppa-kuvaus, joka sisältää kaikki nopat.
+     */
     public Map<Integer, Noppa> heitaKaikkiNopat() {
         return heitaNopat(Arrays.asList(1, 2, 3, 4, 5));
     }
 
+    /**
+     * Metodi kirjaa pisteet vuorossa olevalle pelaajalle.
+     * 
+     * Metodi tarkistaa, mihin kenttään pelaaja haluaa pisteet tallentaa. Sen
+     * jälkeen metodi käy läpi nopat, ja huolehtii oikean pistemäärän
+     * muodostamisesta, jonka jälkeen arvo tallennetaan pelaajan pistetaulukkoon,
+     * mikäli kenttä ei ole jo käytössä. Sen jälkeen katsotaan, täyttyykö 
+     * yläkerran bonuspiste-ehto ja lopuksi pisteiden summa tallennetaan
+     * pistetaulukkoon.
+     * 
+     * @param nytVuorossa Pelaaja-olio joka kertoo vuorossa olevan pelaajan.
+     * @param mihinKenttaan Pelaajan valitsema kenttä, johon pisteet tallennetaan.
+     * @param kirjattavatNopat Collection-kokoelma Noppia, joista arvo lasketaan. 
+     * @throws Exception Metodi heittää poikkeuksen, jos valittu kenttä on jo käytössä.
+     */
     public void kirjaaPisteet(Pelaaja nytVuorossa,
             Kentta mihinKenttaan,
-            Collection<Noppa> kirjattavat) throws Exception {
+            Collection<Noppa> kirjattavatNopat) throws Exception {
         int pisteet = 0;   
         if (mihinKenttaan == Kentta.YKKOSET) {       // ykköset
-            pisteet = laskeSumma(kirjattavat, 1);
+            pisteet = laskeSumma(kirjattavatNopat, 1);
         } else if (mihinKenttaan == Kentta.KAKKOSET) {  // kakkoset
-            pisteet = laskeSumma(kirjattavat, 2);
+            pisteet = laskeSumma(kirjattavatNopat, 2);
         } else if (mihinKenttaan == Kentta.KOLMOSET) {   // kolmoset
-            pisteet = laskeSumma(kirjattavat, 3);
+            pisteet = laskeSumma(kirjattavatNopat, 3);
         } else if (mihinKenttaan == Kentta.NELOSET) {  // neloset
-            pisteet = laskeSumma(kirjattavat, 4);
+            pisteet = laskeSumma(kirjattavatNopat, 4);
         } else if (mihinKenttaan == Kentta.VITOSET) {  // vitoset
-            pisteet = laskeSumma(kirjattavat, 5);
+            pisteet = laskeSumma(kirjattavatNopat, 5);
         } else if (mihinKenttaan == Kentta.KUTOSET) {  // kutoset
-            pisteet = laskeSumma(kirjattavat, 6);
+            pisteet = laskeSumma(kirjattavatNopat, 6);
         } else if (mihinKenttaan == Kentta.PARI) {  // pari
-            pisteet = laskeSamojenSumma(kirjattavat, 2);
+            pisteet = laskeSamojenSumma(kirjattavatNopat, 2);
         } else if (mihinKenttaan == Kentta.KAKSIPARIA) {  // kaksi paria
             
-            int pisteetEkaKierros = laskeSamojenSumma(kirjattavat, 2);
+            int pisteetEkaKierros = laskeSamojenSumma(kirjattavatNopat, 2);
             int muistiSilmaLuku = pisteetEkaKierros / 2;
             
             ArrayList<Noppa> toinenKierros = new ArrayList<>();
             int laskuri = 0;
             
-            for (Noppa n : kirjattavat) {
+            for (Noppa n : kirjattavatNopat) {
                 if (n.getLuku() == muistiSilmaLuku && laskuri < 2) {
                     laskuri++;
                 } else {
@@ -73,19 +105,19 @@ public class Peli {
                 pisteet = pisteetEkaKierros + pisteetTokaKierros;
             }
         } else if (mihinKenttaan == Kentta.KOLMESAMAA) { // kolme samaa
-            pisteet = laskeSamojenSumma(kirjattavat, 3);
+            pisteet = laskeSamojenSumma(kirjattavatNopat, 3);
         } else if (mihinKenttaan == Kentta.NELJASAMAA) { // neljä samaa
-            pisteet = laskeSamojenSumma(kirjattavat, 4);
+            pisteet = laskeSamojenSumma(kirjattavatNopat, 4);
         } else if (mihinKenttaan == Kentta.PIENISUORA) {  // pieni suora
-            pisteet = laskeSuora(kirjattavat, 1, 5);
+            pisteet = laskeSuora(kirjattavatNopat, 1, 5);
         } else if (mihinKenttaan == Kentta.SUURISUORA) {  // suuri suora
-            pisteet = laskeSuora(kirjattavat, 2, 6);
+            pisteet = laskeSuora(kirjattavatNopat, 2, 6);
         } else if (mihinKenttaan == Kentta.TAYSKASI) {  // täyskäsi
-            int pisteetEkaKierros = laskeSamojenSumma(kirjattavat, 3);
+            int pisteetEkaKierros = laskeSamojenSumma(kirjattavatNopat, 3);
             int muistiSilmaLuku = pisteetEkaKierros / 3;
             ArrayList<Noppa> toinenKierros = new ArrayList<>();
             int laskuri = 0;
-            for (Noppa n : kirjattavat) {
+            for (Noppa n : kirjattavatNopat) {
                 if (n.getLuku() == muistiSilmaLuku && laskuri < 3) {
                     laskuri++;
                 } else {
@@ -97,11 +129,11 @@ public class Peli {
                 pisteet = pisteetEkaKierros + pisteetTokaKierros;
             }
         } else if (mihinKenttaan == Kentta.SATTUMA) {  // sattuma
-            for (Noppa n : kirjattavat) {
+            for (Noppa n : kirjattavatNopat) {
                 pisteet += n.getLuku();
             }
         } else if (mihinKenttaan == Kentta.YATZY) {  // yahtzee
-            pisteet = laskeSamojenSumma(kirjattavat, 5);
+            pisteet = laskeSamojenSumma(kirjattavatNopat, 5);
             if (pisteet > 0) {
                 pisteet = 50;
             }
@@ -115,7 +147,15 @@ public class Peli {
 
 
     }
-
+    
+    /**
+     * Metodi palauttaa pelitilanteen.
+     * 
+     * Jos molempien pelaajien kaikki kentät ovat käytössä, palauttaa metodi true, 
+     * muuten false.
+     * 
+     * @return Boolean-arvo joka kertoo, onko peli loppu.
+     */
     public boolean peliLoppu() {
         for (Pelaaja p : pelaajat) {
             if (!p.peliLoppu()) {
@@ -125,21 +165,46 @@ public class Peli {
         return true;
     }
 
+    /**
+     * Metodi lisää pelaajan.
+     * 
+     * @param pelaaja Lisättävä pelaaja.
+     */
     public void addPelaaja(String pelaaja) {
         pelaajat.add(new Pelaaja(pelaaja));
     }
 
+    /**
+     * Palauttaa listan pelaajista.
+     * 
+     * @return Pelaajat listana.
+     */
     public List<Pelaaja> getPelaajat() {
         return pelaajat;
     }
 
+    /**
+     * Palauttaa nopat.
+     * 
+     * @return Nopat Integer-Noppa-kuvauksena.
+     */
     public Map<Integer, Noppa> getNopat() {
         return nopat;
     }
 
-    protected int laskeSumma(Collection<Noppa> nList, int mitaHaetaan) {
+    /**
+     * Apumetodi kirjaaPisteet-metodille.
+     * 
+     * Metodi käy läpi nopat ja laskee summan halutuista silmäluvuista.
+     * Jos silmälukuja ei ole, palautetaan nolla.
+     * 
+     * @param noppaColl Nopat Collection-kokoelmana.
+     * @param mitaHaetaan Haluttu silmäluku.
+     * @return Summa niistä nopista, joissa on haluttu silmäluku.
+     */
+    protected int laskeSumma(Collection<Noppa> noppaColl, int mitaHaetaan) {
         int palaute = 0;
-        for (Noppa n : nList) {
+        for (Noppa n : noppaColl) {
             if (n.getLuku() == mitaHaetaan) {
                 palaute += mitaHaetaan;
             }
@@ -147,8 +212,16 @@ public class Peli {
         return palaute;
     }
 
-    protected int laskeSamojenSumma(Collection<Noppa> nList, int montakoSamaa) {
-        Map<Integer, Integer> ryhmitelty = ryhmitteleLuvunMukaan(nList);
+    /**
+     * Metodi etsii samoja silmälukuja ja palauttaa niiden summan.
+     * 
+     * 
+     * @param noppaColl
+     * @param montakoSamaa
+     * @return 
+     */
+    protected int laskeSamojenSumma(Collection<Noppa> noppaColl, int montakoSamaa) {
+        Map<Integer, Integer> ryhmitelty = ryhmitteleLuvunMukaan(noppaColl);
 
         ArrayList<Integer> vaihtoehdot = new ArrayList<>();
         vaihtoehdot.add(0);

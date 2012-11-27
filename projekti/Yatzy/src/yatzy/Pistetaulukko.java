@@ -8,7 +8,7 @@ import java.util.Map;
  * avulla. Pistetaulukkoon voidaan asettaa arvoja ja kysyä niitä. Se tietää myös
  * summa-kentän.
  * 
- * @author Antti Salmivaara antti.salmivaara@helsinki.fi
+ * @author Antti Salmivaara <antti.salmivaara@helsinki.fi>
  */
 public class Pistetaulukko {
 
@@ -18,14 +18,31 @@ public class Pistetaulukko {
         this.pistetaulukko = new EnumMap<>(Kentta.class);
     }
 
+    /**
+     * Metodi asettaa parametrina tulleet pisteet parametrina
+     * saatavaan kenttään
+     * 
+     * @param pisteet Tallennettavat pisteet.
+     * @param kentta Kenttä, johon pisteet tallennetaan.
+     */
     public void asetaPisteet(int pisteet, Kentta kentta) {
         pistetaulukko.put(kentta, pisteet);
     }
 
+    /**
+     * Metodi palauttaa pistetaulukon Kentta - pisteet -kuvauksena.
+     * 
+     * @return Pistetaulukko Kentta-Integer-kuvauksena.
+     */
     public Map<Kentta, Integer> getPisteet() {
         return pistetaulukko;
     }
 
+    /**
+     * Apumetodi, joka palauttaa pelkästään pisteiden yhteissumman.
+     * 
+     * @return summa integer-arvona.
+     */
     public int getSumma() {
         int palaute = 0;
         for (Kentta i : pistetaulukko.keySet()) {
@@ -36,6 +53,11 @@ public class Pistetaulukko {
         return palaute;
     }
 
+    /**
+     * Tulostaa pisteet Kentta: pisteet -muodossa.
+     * 
+     * @return Pisteet tekstinä.
+     */
     @Override
     public String toString() {
         StringBuilder palaute = new StringBuilder();

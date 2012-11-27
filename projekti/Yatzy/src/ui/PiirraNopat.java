@@ -5,7 +5,7 @@ import logiikka.Noppa;
  * PiirraNopat-luokka sisältää pelin alun "otsikkonoppien" esityksen sekä metodin
  * noppien esittämiseen tekstikäyttöliittymässä.
  * 
- * @author Antti Salmivaara antti.salmivaara@helsinki.fi
+ * @author Antti Salmivaara <antti.salmivaara@helsinki.fi>
  */
 public class PiirraNopat {
     
@@ -19,15 +19,29 @@ public class PiirraNopat {
                          "└───────┘ └───────┘ └───────┘ └───────┘ └───────┘\n";
     }
    
+    /**
+     * Metodi palauttaa nopat, joita käytetään otsikkoina pelin käynnistyessä.
+     * 
+     * @return Otsikkonopat String-arvona.
+     */
     public String alkuNopat() {
         return alkunopat;
     }
 
-    public String tulostaNopat(Collection<Noppa> nop) {
+    /**
+     * Metodi palauttaa String-arvona noppien String-esityksen.
+     * 
+     * Metodi lukee Nopista silmäluvut ja tulostaa sen mukaisesti merkeistä
+     * rakennetun esityksen.
+     * 
+     * @param nopat Noppa-luokan ilmentymät tallennettuna Collection-kokoelmaan.
+     * @return Noppien String-esitys.
+     */
+    public String tulostaNopat(Collection<Noppa> nopat) {
         StringBuilder sb = new StringBuilder();
         sb.append("┌───────┐ ┌───────┐ ┌───────┐ ┌───────┐ ┌───────┐");
         sb.append("\n");
-        for (Noppa n : nop) {
+        for (Noppa n : nopat) {
             int nLuku = n.getLuku();
             if (nLuku == 6 || nLuku == 5 || nLuku == 4) {
                 sb.append("│ ●   ● │ ");
@@ -38,7 +52,7 @@ public class PiirraNopat {
             }
         }
         sb.append("\n");
-        for (Noppa n : nop) {
+        for (Noppa n : nopat) {
             int nLuku = n.getLuku();
             if (nLuku == 6) {
                 sb.append("│ ●   ● │ ");
@@ -49,7 +63,7 @@ public class PiirraNopat {
             }
         }
         sb.append("\n");
-        for (Noppa n : nop) {
+        for (Noppa n : nopat) {
             int nLuku = n.getLuku();
             if (nLuku == 6 || nLuku == 5 || nLuku == 4) {
                 sb.append("│ ●   ● │ ");

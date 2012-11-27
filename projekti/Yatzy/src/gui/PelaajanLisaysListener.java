@@ -42,8 +42,8 @@ public class PelaajanLisaysListener implements ActionListener {
         p1.setEnabled(false);
         p2.setEnabled(false);
         ((JButton) ae.getSource()).setEnabled(false);
-       // ((KenttaOtsikko) ((JPanel) taulukko.getComponent(1)).getComponent(0)).setText(p1.getText());
-       // ((KenttaOtsikko) ((JPanel) taulukko.getComponent(2)).getComponent(0)).setText(p2.getText());
+        ((KenttaOtsikko) ((JPanel) taulukko.getComponent(1)).getComponent(0)).setText(p1.getText());
+        ((KenttaOtsikko) ((JPanel) taulukko.getComponent(2)).getComponent(0)).setText(p2.getText());
         ((CardLayout) alaOsa.getLayout()).show(alaOsa,"peli");
     }
 }

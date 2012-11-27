@@ -12,26 +12,32 @@ import yatzy.Pelaaja;
  * Teksti-luokka on Yatzy-pelin tekstikäyttöliittymä. Se sisältää käynnistä-metodin
  * joka aloittaa pelin, sekä metodit pistetaulukon ja noppien tulostamiseen.
  *
- * @author Antti Salmivaara antti.salmivaara@helsinki.fi
+ * @author Antti Salmivaara <antti.salmivaara@helsinki.fi>
  */
 public class Teksti implements Kayttoliittyma {
 
     private Scanner lukija;
     private Peli peli;
-    private PiirraNopat nopat;
+    private PiirraNopat noppaPiirturi;
     private Map<Kentta, String> otsikko;
 
     public Teksti() {
         this.lukija = new Scanner(System.in);
         this.peli = new Peli();
-        this.nopat = new PiirraNopat();
+        this.noppaPiirturi = new PiirraNopat();
         this.otsikko = luoOtsikko();
     }
 
+    /**
+     * Metodi käynnistää pelin.
+     * 
+     * Metodi tulostaa pelitilanteet ja lukee käyttäjän syötteet ja
+     * kutsuu apumetodeja.
+     */
     @Override
     public void run() {
 
-        System.out.println(nopat.alkuNopat());
+        System.out.println(noppaPiirturi.alkuNopat());
 
         String nimi;
         int i = 1;
@@ -108,19 +114,30 @@ public class Teksti implements Kayttoliittyma {
 
         }
         tulostaTaulukko();
-        System.out.println(nopat.alkuNopat());
+        System.out.println(noppaPiirturi.alkuNopat());
         System.out.println("Kiitos pelaamisesta!");
 
     }
 
+    /**
+     * Metodi tulostaa nopat.
+     * 
+     * Metodi kutsuu PiirraNopat-luokan ilmentymää noppaPiirturi ja 
+     * tulostaa ruudulle saamansa String-syötteen.
+     */
     @Override
     public void tulostaNopat() {
-        System.out.println(nopat.tulostaNopat(peli.getNopat().values()));
+        System.out.println(noppaPiirturi.tulostaNopat(peli.getNopat().values()));
     }
-
+    
+    /**
+     * Metodi tulostaa pistetaulukon.
+     * 
+     * Metodi tulostaa pistetaulukon pisteineen ruudulle kutsumalla pelaajien
+     * pisteitä ja apumetodeja.
+     */
     @Override
     public void tulostaTaulukko() {
-        //StringBuilder sb = new StringBuilder();
         System.out.println(ylaviiva);
         System.out.print("│        │");
         tulostaOtsikko();
@@ -150,7 +167,11 @@ public class Teksti implements Kayttoliittyma {
         }
         System.out.println(alaviiva);
     }
-
+    /**
+     * Metodi tulostaa otsikon.
+     * 
+     * Metodi tulostaa pistetaulukon otsikkorivin kenttänimineen.
+     */
     protected void tulostaOtsikko() {
         for (Kentta k : otsikko.keySet()) {
             System.out.print(otsikko.get(k) + "│");
@@ -161,6 +182,14 @@ public class Teksti implements Kayttoliittyma {
     private String valiviiva = "├────────┼────┼────┼────┼────┼────┼────┼─────┼───────┼─────────┼──────┼───────┼─────────┼─────────┼─────────┼─────────┼───────┼─────┤";
     private String alaviiva = "└────────┴────┴────┴────┴────┴────┴────┴─────┴───────┴─────────┴──────┴───────┴─────────┴─────────┴─────────┴─────────┴───────┴─────┘";
 
+    /**
+     * Metodi luo otsikkorivin.
+     * 
+     * Metodi muodostaa varsin manuaalisesti Kenttä-String-kuvauksen kaikista 
+     * kentistä ja niiden otsikkoriviin tulostettavista vastineista.
+     * 
+     * @return Kentta-String-kuvaus otsikon nimikkeistä.
+     */
     protected final Map<Kentta, String> luoOtsikko() {
         EnumMap<Kentta, String> apuOtsikko;
         apuOtsikko = new EnumMap<>(Kentta.class);
@@ -185,6 +214,15 @@ public class Teksti implements Kayttoliittyma {
         return apuOtsikko;
     }
 
+    /**
+     * Metodi palauttaa Kentan käyttäjän syötteen mukaisesti.
+     * 
+     * Pelaajan valitessa kenttää, johon pisteet tallennetaan, hän antaa kentän
+     * numeroarvona. Metodi palauttaa vastaavan kentän.
+     * 
+     * @param syote Käyttäjän syöte.
+     * @return Kentta joka vastaa käyttäjän syötettä.
+     */
     protected Kentta getKentta(String syote) {
         switch (syote) {
             case "1":

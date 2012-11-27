@@ -61,4 +61,5 @@
 27.11.2012
   00.00-02.00
     Graafisen käyttöliittymän ohjelmointia.
-
+  13.00 - 14.20
+    JavaDoc-kuvausten kirjoittamista metodeille.
