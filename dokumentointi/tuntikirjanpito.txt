@@ -63,3 +63,5 @@
     Graafisen käyttöliittymän ohjelmointia.
   13.00 - 14.20
     JavaDoc-kuvausten kirjoittamista metodeille.
+  21.00 - 22.00
+    Javadoc-kuvausten kirjoittamista metodeille.

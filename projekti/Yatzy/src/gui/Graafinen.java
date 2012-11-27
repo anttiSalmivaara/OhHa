@@ -6,8 +6,9 @@ import logiikka.*;
 import yatzy.Kentta;
 
 /**
- *
- * @author Antti Salmivaara antti.salmivaara@helsinki.fi
+ * Luokka pitää huolen Yatzy-pelin graafisesta käyttöliittymästä.
+ * 
+ * @author Antti Salmivaara <antti.salmivaara@helsinki.fi>
  */
 public class Graafinen implements Runnable {
 
@@ -19,6 +20,11 @@ public class Graafinen implements Runnable {
     private NoppaIconMaker ikonit;
     private PelaajaVuoro pv;
     
+    /**
+     * Konstruktori saa parametrina Peli-luokan ilmentymän.
+     * 
+     * @param peli Parametrina annettava Yatzy-pelin ilmentymä.
+     */    
     public Graafinen(Peli peli) {
         this.peli = peli;
         this.taulukko = taulukko();
@@ -32,6 +38,9 @@ public class Graafinen implements Runnable {
         }
     }
 
+    /**
+     * Käynnistää pelin.
+     */
     @Override
     public void run() {
         frame = new JFrame("Yatzy v.1");
@@ -45,6 +54,15 @@ public class Graafinen implements Runnable {
         frame.setVisible(true);
     }
 
+    /**
+     * Luo graafisen käyttäliittymän muotoilun.
+     * 
+     * Container-olioon lisätään Nopat yläreunaan, pelaajien lisäys ja pelialue
+     * lisätään keskelle. Alaosaan lisätään noppien heittonappi.
+     * 
+     * @param container Container-olio, johon alueet liitetään.
+     * @throws Exception 
+     */
     private void luoRuudut(Container container) throws Exception {
         container.setLayout(new BorderLayout());
         container.add(nopat, BorderLayout.NORTH);
@@ -56,6 +74,12 @@ public class Graafinen implements Runnable {
         container.add(heita, BorderLayout.SOUTH);
     }
 
+    /**
+     * Nopat lisätään nappeina JPanel-olioon.
+     * 
+     * @return Nopat JPanel-oliossa.
+     * @throws Exception 
+     */
     private JPanel nopat() throws Exception {
         JPanel palaute = new JPanel();
         palaute.setLayout(new GridLayout(1, 5));
@@ -68,6 +92,11 @@ public class Graafinen implements Runnable {
 
     }
 
+    /**
+     * Sisältää pelaajien lisäyksen ja varsinaisen pelikentän.
+     * 
+     * @return Pelaajien lisäys ja pelkikenttä JPanel-oliossa.
+     */
     private JPanel alaOsa() {
         final String ALKU = "alku";
         final String PELI = "peli";
@@ -84,6 +113,11 @@ public class Graafinen implements Runnable {
         return palaute;
     }
 
+    /**
+     * Pelaajien lisäysruutu.
+     * 
+     * @return Pelaajien lisäysruutu.
+     */
     private JPanel luoAlkuRuutu() {
         JPanel palaute = new JPanel();
         palaute.setLayout(new GridLayout(8, 1));
@@ -106,6 +140,11 @@ public class Graafinen implements Runnable {
         return palaute;
     }
 
+    /**
+     * Sisältää kenttäotsikot ja pelaajien pistetaulukot.
+     * 
+     * @return Pelikenttä JPanel-oliossa.
+     */
     private JPanel taulukko() {
         JPanel palaute = new JPanel();
         palaute.setLayout(new GridLayout(1, 3));
@@ -116,7 +155,13 @@ public class Graafinen implements Runnable {
 
         return palaute;
     }
-
+    
+    /**
+     * Luo graafisen pistetaulukon yhdelle pelajaalle.
+     * 
+     * @param i Saa arvon 1 tai 2 pelaajan mukaan.
+     * @return Yhden pelaajan pistetaulukko JPanel-oliossa.
+     */
     private JPanel luoYhdenPelaajanTaulukko(int i) {
         JPanel palaute = new JPanel();
         palaute.setLayout(new GridLayout(18, 1));
@@ -143,6 +188,11 @@ public class Graafinen implements Runnable {
         return palaute;
     }
 
+    /**
+     * Luo otsikot pistetaulukoille.
+     * 
+     * @return Otsikot JPanel-oliossa.
+     */
     private JPanel luoKenttaOtsikot() {
         JPanel palaute = new JPanel();
         palaute.setLayout(new GridLayout(18, 1));

@@ -9,8 +9,9 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 /**
- *
- * @author Antti Salmivaara antti.salmivaara@helsinki.fi
+ * Luo ikonit nopille kuvista.
+ * 
+ * @author Antti Salmivaara <antti.salmivaara@helsinki.fi>
  */
 public class NoppaIconMaker {
     
@@ -20,6 +21,12 @@ public class NoppaIconMaker {
         this.kuvat = teeKuvat();
     }
     
+    /**
+     * Palauttaa halutun noppaikonin.
+     * 
+     * @param luku Silmäluku jota vastaava ikoni palautetaan.
+     * @return Palautettava noppaikoni.
+     */
     public Icon getIcon(int luku) {
         if (luku == 1) {
             return kuvat.get(0);
@@ -37,7 +44,12 @@ public class NoppaIconMaker {
             return null;
         }
     }
-    
+    /**
+     * Luo ikonit kuvista konstruktorin käskystä.
+     * 
+     * @return
+     * @throws Exception 
+     */
     private List<Icon> teeKuvat() throws Exception {
         ArrayList<Icon> palaute = new ArrayList<>();
         BufferedImage img;

@@ -10,7 +10,8 @@ import logiikka.Peli;
 import yatzy.Pelaaja;
 
 /**
- *
+ * Pitää kirjaa pelaajien vuoroista.
+ * 
  * @author antti
  */
 public class PelaajaVuoro {
@@ -24,6 +25,9 @@ public class PelaajaVuoro {
         this.taulukko = taulukko;
     }
 
+    /**
+     * Ottaa vuorossa olevaksi pelaajaksi pelin alussa ensimmäisen pelaajan.
+     */
     public void alusta() {
         pelaaja = peli.getPelaajat().get(0);
         for (Component c : ((JPanel) taulukko.getComponent(2)).getComponents()) {
@@ -33,10 +37,18 @@ public class PelaajaVuoro {
         }
     }
 
+    /**
+     * Palauttaa vuorossa olevan pelaajan.
+     * 
+     * @return Vuorossa oleva pelaaja.
+     */
     public Pelaaja getVuorossa() {
         return pelaaja;
     }
 
+    /**
+     * Vaihtaa vuoroa.
+     */
     public void setSeuraava() {
         if (pelaaja.hashCode() == peli.getPelaajat().get(0).hashCode()) {
             pelaaja = peli.getPelaajat().get(1);
@@ -46,7 +58,11 @@ public class PelaajaVuoro {
             aktivoiSeuraava(1);
         }
     }
-    
+    /**
+     * Vuoron päättyessä aktivoi seuraavan pelaajan kentät.
+     * 
+     * @param i Onko kyseessä Pelaaja 1 vai Pelaaja 2
+     */
     private void aktivoiSeuraava(int i) {
         if (i == 1) {
             for (Component c : ((JPanel) taulukko.getComponent(i)).getComponents()) {

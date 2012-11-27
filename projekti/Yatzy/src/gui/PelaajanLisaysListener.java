@@ -14,8 +14,9 @@ import javax.swing.JTextField;
 import logiikka.Peli;
 
 /**
- *
- * @author antti
+ * Pelaajat tallentavan napin kuuntelija.
+ * 
+ * @author Antti Salmivaara <antti.salmivaara@helsinki.fi>
  */
 public class PelaajanLisaysListener implements ActionListener {
     
@@ -35,6 +36,12 @@ public class PelaajanLisaysListener implements ActionListener {
         this.alaOsa = alaOsa;
     }
     
+    /**
+     * Lisää pelaajat peliin.
+     * 
+     * Vaihtaa käyttöliittymän keskipaneelin näkymän pelikentäksi.
+     * @param ae 
+     */
     @Override
     public void actionPerformed(ActionEvent ae) {
         peli.addPelaaja(p1.getText());

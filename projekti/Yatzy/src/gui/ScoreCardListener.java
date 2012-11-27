@@ -8,8 +8,9 @@ import logiikka.Peli;
 import yatzy.Kentta;
 
 /**
- *
- * @author Antti Salmivaara antti.salmivaara@helsinki.fi
+ * Kuuntelee pisteet tallentavaa kenttää.
+ * 
+ * @author Antti Salmivaara <antti.salmivaara@helsinki.fi>
  */
 public class ScoreCardListener implements ActionListener {
 
@@ -24,6 +25,13 @@ public class ScoreCardListener implements ActionListener {
         this.taulukko = taulukko;
     }
 
+    /**
+     * Tallentaa arvon kenttään ja vaihtaa vuoroa.
+     * 
+     * Deaktivoi sen pelaajan kentät, joka ei ole vuorossa.
+     * 
+     * @param ae Nappievent
+     */
     @Override
     public void actionPerformed(ActionEvent ae) {
         try {
@@ -38,16 +46,25 @@ public class ScoreCardListener implements ActionListener {
         pv.setSeuraava();
     }
 
+    /**
+     * Mikäli bonuspisteet on myönnetty, näytetään ne bonuskentässä.
+     */
     private void laskeBonusPisteet() {
         if (pv.getVuorossa().getPisteet().containsKey(Kentta.BONUS)) {
             ((KenttaOtsikko) taulukko.getComponent(7)).setText(pv.getVuorossa().getPisteet().get(Kentta.BONUS) + "");
         }
     }
     
+    /**
+     * Päivittää summan summakenttään.
+     */
     private void laskeSumma() {
         ((KenttaOtsikko) taulukko.getComponent(17)).setText(pv.getVuorossa().getSumma() + "");
     }
     
+    /**
+     * Deaktivoi sen pelaajan kentät, joka oli vuorossa.
+     */
     private void deAktivoiKentat() {
         for (Component c : taulukko.getComponents()) {
             if (c.isEnabled()) {

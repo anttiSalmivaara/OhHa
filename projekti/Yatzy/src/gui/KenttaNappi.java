@@ -6,8 +6,11 @@ import logiikka.Peli;
 import yatzy.Kentta;
 
 /**
- *
- * @author Antti Salmivaara antti.salmivaara@helsinki.fi
+ * Luokka lisää JButton-luokkaan toiminnallisuutta.
+ * 
+ * Luokka toimii tulosnäyttönä pistekortilla.
+ * 
+ * @author Antti Salmivaara <antti.salmivaara@helsinki.fi>
  */
 public class KenttaNappi extends JButton {
 
@@ -23,12 +26,18 @@ public class KenttaNappi extends JButton {
         }
     }
 
+    /**
+     * Asettaa kentän aktiviseksi.
+     */
     public void setActive() {
         if (super.getText().isEmpty()) {
             super.setEnabled(true);
         }
     }
 
+    /**
+     * Asettaa kentän passiiviseksi.
+     */
     public void setPassive() {
         super.setEnabled(false);
     }

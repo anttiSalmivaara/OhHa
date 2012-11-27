@@ -9,8 +9,9 @@ import javax.swing.JPanel;
 import logiikka.Peli;
 
 /**
- *
- * @author Antti Salmivaara antti.salmivaara@helsinki.fi
+ * Luokka kuuntelee nopanheitto-nappia.
+ * 
+ * @author Antti Salmivaara <antti.salmivaara@helsinki.fi>
  */
 public class HeitaListener implements ActionListener {
     
@@ -26,6 +27,11 @@ public class HeitaListener implements ActionListener {
         this.ovelaLaskuri = 0;
     }
     
+    /**
+     * Heittää nopat napin painalluksesta.
+     * 
+     * @param ae 
+     */
     @Override
     public void actionPerformed(ActionEvent ae) {
         peli.heitaNopat(getHeitettavat());
@@ -33,7 +39,13 @@ public class HeitaListener implements ActionListener {
             pv.alusta();
         }
     }
-    
+    /**
+     * Palauttaa heitettävät nopat.
+     * 
+     * Palauttaa heitettävät nopat GraafNoppien valinnan perusteella.
+     * 
+     * @return Lista heitettävistä nopista järjestysluvun mukaan.
+     */
     private List<Integer> getHeitettavat() {
         ArrayList<Integer> palaute = new ArrayList<>();
         GraafNoppa apuri;

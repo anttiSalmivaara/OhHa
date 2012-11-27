@@ -5,16 +5,27 @@ import javax.swing.Icon;
 import javax.swing.JToggleButton;
 
 /**
- *
- * @author Antti Salmivaara antti.salmivaara@helsinki.fi
+ * Luokka esittää graafisen nopan laajennettuna JButtonina.
+ * 
+ * @author Antti Salmivaara <antti.salmivaara@helsinki.fi>
  */
 public class GraafNoppa extends JToggleButton {
 
-    public GraafNoppa(Icon icon) throws Exception {
+    /**
+     * Konstruktori saa parametrina nopassa aluksi näkyvän ikonin.
+     * 
+     * @param icon Aluksi näytettävä ikoni.
+     */
+    public GraafNoppa(Icon icon) {
         super(icon);
         super.setPreferredSize(new Dimension(80, 80));
     }
 
+    /**
+     * Asettaa noppaan parametrina annetun ikonin.
+     * 
+     * @param icon 
+     */
     public void uusiNoppa(Icon icon) {
         super.setIcon(icon);
     }

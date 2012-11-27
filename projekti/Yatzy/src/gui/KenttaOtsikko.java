@@ -4,8 +4,9 @@ import java.awt.Color;
 import javax.swing.JTextField;
 
 /**
- *
- * @author Antti Salmivaara antti.salmivaara@helsinki.fi
+ * Otsikkokenttä
+ * 
+ * @author Antti Salmivaara <antti.salmivaara@helsinki.fi>
  */
 public class KenttaOtsikko extends JTextField {
     
