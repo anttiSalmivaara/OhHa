@@ -16,6 +16,9 @@ public class Peli {
 
     private ArrayList<Pelaaja> pelaajat;
     private HashMap<Integer, Noppa> nopat;
+    private Pelaaja nytVuorossa;
+    private int heittoLaskuri;
+    private final int MAXHEITOT = 3;
 
     public Peli() {
         this.pelaajat = new ArrayList<>();
@@ -23,6 +26,11 @@ public class Peli {
         for (int i = 1; i < 6; i++) {
             this.nopat.put(i, new Noppa());
         }
+    }
+
+    public void aloita() {
+        nytVuorossa = pelaajat.get(0);
+        heittoLaskuri = 0;
     }
 
     /**
@@ -40,6 +48,7 @@ public class Peli {
         for (int n : heitettavat) {
             nopat.get(n).heita();
         }
+        heittoLaskuri++;
         return nopat;
     }
 
@@ -49,7 +58,9 @@ public class Peli {
      * @return Integer-Noppa-kuvaus, joka sisältää kaikki nopat.
      */
     public Map<Integer, Noppa> heitaKaikkiNopat() {
+        heittoLaskuri++;
         return heitaNopat(Arrays.asList(1, 2, 3, 4, 5));
+
     }
 
     /**
@@ -89,25 +100,7 @@ public class Peli {
         } else if (mihinKenttaan == Kentta.PARI) {  // pari
             pisteet = laskeSamojenSumma(kirjattavatNopat, 2);
         } else if (mihinKenttaan == Kentta.KAKSIPARIA) {  // kaksi paria
-
-            int pisteetEkaKierros = laskeSamojenSumma(kirjattavatNopat, 2);
-            int muistiSilmaLuku = pisteetEkaKierros / 2;
-
-            ArrayList<Noppa> toinenKierros = new ArrayList<>();
-            int laskuri = 0;
-
-            for (Noppa n : kirjattavatNopat) {
-                if (n.getLuku() == muistiSilmaLuku && laskuri < 2) {
-                    laskuri++;
-                } else {
-                    toinenKierros.add(n);
-                }
-            }
-            int pisteetTokaKierros = laskeSamojenSumma(toinenKierros, 2);
-
-            if (pisteetEkaKierros > 0 && pisteetTokaKierros > 0) {
-                pisteet = pisteetEkaKierros + pisteetTokaKierros;
-            }
+            pisteet = laskeKaksiParia(kirjattavatNopat);
         } else if (mihinKenttaan == Kentta.KOLMESAMAA) { // kolme samaa
             pisteet = laskeSamojenSumma(kirjattavatNopat, 3);
         } else if (mihinKenttaan == Kentta.NELJASAMAA) { // neljä samaa
@@ -117,21 +110,7 @@ public class Peli {
         } else if (mihinKenttaan == Kentta.SUURISUORA) {  // suuri suora
             pisteet = laskeSuora(kirjattavatNopat, 2, 6);
         } else if (mihinKenttaan == Kentta.TAYSKASI) {  // täyskäsi
-            int pisteetEkaKierros = laskeSamojenSumma(kirjattavatNopat, 3);
-            int muistiSilmaLuku = pisteetEkaKierros / 3;
-            ArrayList<Noppa> toinenKierros = new ArrayList<>();
-            int laskuri = 0;
-            for (Noppa n : kirjattavatNopat) {
-                if (n.getLuku() == muistiSilmaLuku && laskuri < 3) {
-                    laskuri++;
-                } else {
-                    toinenKierros.add(n);
-                }
-            }
-            int pisteetTokaKierros = laskeSamojenSumma(toinenKierros, 2);
-            if (pisteetEkaKierros > 0 && pisteetTokaKierros > 0) {
-                pisteet = pisteetEkaKierros + pisteetTokaKierros;
-            }
+            pisteet = laskeTaysKasi(kirjattavatNopat);
         } else if (mihinKenttaan == Kentta.SATTUMA) {  // sattuma
             for (Noppa n : kirjattavatNopat) {
                 pisteet += n.getLuku();
@@ -148,8 +127,6 @@ public class Peli {
         nytVuorossa.asetaPisteet(pisteet, mihinKenttaan);
         laskeBonusPisteet(nytVuorossa);
         nytVuorossa.asetaPisteet(nytVuorossa.getSumma(), Kentta.SUMMA);
-
-
     }
 
     /**
@@ -178,6 +155,20 @@ public class Peli {
         pelaajat.add(new Pelaaja(pelaaja));
     }
 
+    public void vuoroVaihtuu() {
+        if (nytVuorossa.hashCode() == pelaajat.get(0).hashCode()) {
+            nytVuorossa = pelaajat.get(1);
+        } else {
+            nytVuorossa = pelaajat.get(0);
+        }
+        heittoLaskuri = 0;
+
+    }
+
+    public Pelaaja getVuorossa() {
+        return this.nytVuorossa;
+    }
+
     /**
      * Palauttaa pelaajat listana.
      *
@@ -194,6 +185,22 @@ public class Peli {
      */
     public Map<Integer, Noppa> getNopat() {
         return nopat;
+    }
+
+    public int getHeittojenMaara() {
+        return heittoLaskuri;
+    }
+
+    public Pelaaja getVoittaja() {
+        Pelaaja palaute = null;
+        int laskuri = 0;
+        for (Pelaaja p : pelaajat) {
+            if (p.getSumma() > laskuri) {
+                laskuri = p.getSumma();
+                palaute = p;
+            }
+        }
+        return palaute;
     }
 
     /**
@@ -241,6 +248,37 @@ public class Peli {
         Collections.reverse(vaihtoehdot);
         return vaihtoehdot.get(0);
 
+    }
+
+    /**
+     * Laskee kahden parin arvon.
+     *
+     * Palauttaa nolla, mikäli kahta paria ei löydy.
+     *
+     * @param noppaColl Nopat, joista pareja etsitään.
+     * @return Kahden parin arvo tai nolla.
+     */
+    protected int laskeKaksiParia(Collection<Noppa> noppaColl) {
+        int palaute = 0;
+        int pisteetEkaKierros = laskeSamojenSumma(noppaColl, 2);
+        int muistiSilmaLuku = pisteetEkaKierros / 2;
+
+        ArrayList<Noppa> toinenKierros = new ArrayList<>();
+        int laskuri = 0;
+
+        for (Noppa n : noppaColl) {
+            if (n.getLuku() == muistiSilmaLuku && laskuri < 2) {
+                laskuri++;
+            } else {
+                toinenKierros.add(n);
+            }
+        }
+        int pisteetTokaKierros = laskeSamojenSumma(toinenKierros, 2);
+
+        if (pisteetEkaKierros > 0 && pisteetTokaKierros > 0) {
+            palaute = pisteetEkaKierros + pisteetTokaKierros;
+        }
+        return palaute;
     }
 
     /**
@@ -307,6 +345,34 @@ public class Peli {
             }
             return palaute;
         }
+    }
+
+    /**
+     * Palauttaa täyskäden arvon.
+     *
+     * Metodi palauttaa nolla, mikäli täyskättä ei löydy.
+     *
+     * @param noppaColl Nopat jotka tarkastetaan.
+     * @return Täyskäden pistemäärä tai nolla.
+     */
+    protected int laskeTaysKasi(Collection<Noppa> noppaColl) {
+        int palaute = 0;
+        int pisteetEkaKierros = laskeSamojenSumma(noppaColl, 3);
+        int muistiSilmaLuku = pisteetEkaKierros / 3;
+        ArrayList<Noppa> toinenKierros = new ArrayList<>();
+        int laskuri = 0;
+        for (Noppa n : noppaColl) {
+            if (n.getLuku() == muistiSilmaLuku && laskuri < 3) {
+                laskuri++;
+            } else {
+                toinenKierros.add(n);
+            }
+        }
+        int pisteetTokaKierros = laskeSamojenSumma(toinenKierros, 2);
+        if (pisteetEkaKierros > 0 && pisteetTokaKierros > 0) {
+            palaute = pisteetEkaKierros + pisteetTokaKierros;
+        }
+        return palaute;
     }
 
     /**

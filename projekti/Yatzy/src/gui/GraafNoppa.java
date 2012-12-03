@@ -1,7 +1,6 @@
 package gui;
 
 import java.awt.Dimension;
-import javax.swing.Icon;
 import javax.swing.JToggleButton;
 
 /**
@@ -10,15 +9,19 @@ import javax.swing.JToggleButton;
  * @author Antti Salmivaara <antti.salmivaara@helsinki.fi>
  */
 public class GraafNoppa extends JToggleButton {
+    
+    private NoppaIconMaker ikonit;
 
     /**
      * Konstruktori saa parametrina nopassa aluksi näkyvän ikonin.
      * 
      * @param icon Aluksi näytettävä ikoni.
      */
-    public GraafNoppa(Icon icon) {
-        super(icon);
-        super.setPreferredSize(new Dimension(80, 80));
+    public GraafNoppa(NoppaIconMaker ikonit, int alkuSilma) {
+        super();
+        this.ikonit = ikonit;
+        super.setIcon(ikonit.getIcon(alkuSilma));
+        super.setMaximumSize(new Dimension(80, 80));
     }
 
     /**
@@ -26,7 +29,11 @@ public class GraafNoppa extends JToggleButton {
      * 
      * @param icon 
      */
-    public void uusiNoppa(Icon icon) {
-        super.setIcon(icon);
+    public void uusiNoppa(int silmaluku) {
+        super.setIcon(ikonit.getIcon(silmaluku));
+    }
+    
+    public void aktivoi() {
+        super.setSelected(false);
     }
 }

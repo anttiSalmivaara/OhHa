@@ -16,13 +16,13 @@ public class KenttaNappi extends JButton {
 
     private Kentta kentta;
 
-    public KenttaNappi(PelaajaVuoro pv, JPanel taulukko, Peli peli, Kentta kentta) {
+    public KenttaNappi(int pelaaja, JPanel nopat, JPanel taulukko, Peli peli, Kentta kentta) {
         super();
         this.kentta = kentta;
-        super.addActionListener(new ScoreCardListener(pv, taulukko, peli, this.kentta));
+        this.addActionListener(new ScoreCardListener(pelaaja, nopat, taulukko, peli, this.kentta));
         if (this.kentta == Kentta.BONUS && this.kentta == Kentta.SUMMA) {
-            super.setEnabled(false);
-            super.setText("0");
+            this.setEnabled(false);
+            this.setText("0");
         }
     }
 
@@ -40,5 +40,11 @@ public class KenttaNappi extends JButton {
      */
     public void setPassive() {
         super.setEnabled(false);
+    }
+    
+    @Override
+    public final void setText(String text) {
+        super.setText(text);
+        super.repaint();
     }
 }

@@ -5,9 +5,11 @@
 package gui;
 
 import java.awt.CardLayout;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -20,20 +22,16 @@ import logiikka.Peli;
  */
 public class PelaajanLisaysListener implements ActionListener {
     
-    private Peli peli;
+    private Container container;
     private JTextField p1;
     private JTextField p2;
-    private JPanel alaOsa;
-    private JPanel taulukko;
-    private PelaajaVuoro pv;
+    private Peli peli;
     
-    public PelaajanLisaysListener(JPanel pelaajaKentat, JPanel alaOsa, PelaajaVuoro pv, JPanel taulukko, Peli peli) {
+    public PelaajanLisaysListener(Container container, JTextField p1, JTextField p2, Peli peli) {
+        this.container = container;
+        this.p1 = p1;
+        this.p2 = p2;
         this.peli = peli;
-        this.p1 = (JTextField) pelaajaKentat.getComponent(1);
-        this.p2 = (JTextField) pelaajaKentat.getComponent(3);
-        this.taulukko = taulukko;
-        this.pv = pv;
-        this.alaOsa = alaOsa;
     }
     
     /**
@@ -46,11 +44,26 @@ public class PelaajanLisaysListener implements ActionListener {
     public void actionPerformed(ActionEvent ae) {
         peli.addPelaaja(p1.getText());
         peli.addPelaaja(p2.getText());
-        p1.setEnabled(false);
-        p2.setEnabled(false);
-        ((JButton) ae.getSource()).setEnabled(false);
-        ((KenttaOtsikko) ((JPanel) taulukko.getComponent(1)).getComponent(0)).setText(p1.getText());
-        ((KenttaOtsikko) ((JPanel) taulukko.getComponent(2)).getComponent(0)).setText(p2.getText());
-        ((CardLayout) alaOsa.getLayout()).show(alaOsa,"peli");
+        peli.heitaKaikkiNopat();
+        peli.aloita();
+        piirraUudetNopat( (JButton) ae.getSource());
+        ((CardLayout) container.getLayout()).show(container, "peli");
     }
+    
+    private void piirraUudetNopat(JButton lisaaPelaaja) {
+        JPanel alkuRuutu = (JPanel) lisaaPelaaja.getParent();
+        JPanel cardLayoutRuutu = (JPanel) alkuRuutu.getParent();
+        JPanel peliKentta = (JPanel) cardLayoutRuutu.getComponent(1);
+        JPanel noppaPanel = (JPanel) peliKentta.getComponent(0);
+        
+        ArrayList<GraafNoppa> gNopat = new ArrayList<>();
+        for (Component c : noppaPanel.getComponents()) {
+            gNopat.add( (GraafNoppa) c);
+        }
+        
+        for (int i = 0; i < 5; i++) {
+            gNopat.get(i).uusiNoppa(peli.getNopat().get(i + 1).getLuku());
+        }
+    }
+    
 }
