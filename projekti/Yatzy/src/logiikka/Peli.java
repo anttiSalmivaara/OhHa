@@ -18,6 +18,9 @@ public class Peli {
     private HashMap<Integer, Noppa> nopat;
     private Pelaaja nytVuorossa;
 
+    /**
+     * Konstruktori luo pelaajalistan ja tallentaa nopat kuvaukseksi.
+     */
     public Peli() {
         this.pelaajat = new ArrayList<>();
         this.nopat = new HashMap<>();
@@ -195,6 +198,9 @@ public class Peli {
 
     /**
      * Palauttaa pelin voittajan.
+     * 
+     * Kun peli on loppu, metodilta kysytään kummalla pelaajalla on enemmän
+     * pisteitä.
      *
      * @return pelin voittanut Pelaaja-olio.
      */

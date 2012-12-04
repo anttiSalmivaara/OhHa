@@ -17,6 +17,11 @@ public class NoppaIconMaker {
     
     private List<Icon> kuvat;
    
+    /**
+     * Konstruktori luo kuvat.
+     * 
+     * @throws Exception Poikkeus jos kuvien lukeminen tiedostosta epäonnistuu.
+     */
     public NoppaIconMaker() throws Exception {
         this.kuvat = teeKuvat();
     }
@@ -48,8 +53,8 @@ public class NoppaIconMaker {
     /**
      * Luo ikonit kuvista konstruktorin käskystä.
      * 
-     * @return
-     * @throws Exception 
+     * @return Ikonit listassa.
+     * @throws Exception Poikkeus, jos kuvien luku tiedostosta epäonnistuu.
      */
     private List<Icon> teeKuvat() throws Exception {
         ArrayList<Icon> palaute = new ArrayList<>();

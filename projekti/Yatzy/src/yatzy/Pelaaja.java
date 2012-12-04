@@ -15,6 +15,10 @@ public class Pelaaja {
     private Pistetaulukko pistetaulukko;
     private String nimi;
     
+    /**
+     * Konstruktori luo pistetaulukon sekä tallentaa pelaajan nimen.
+     * @param nimi Pelaajan nimi String-oliona.
+     */
     public Pelaaja(String nimi) {
         this.pistetaulukko = new Pistetaulukko();
         this.nimi = nimi;

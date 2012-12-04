@@ -21,6 +21,11 @@ public class Teksti {
     private PiirraNopat noppaPiirturi;
     private Map<Kentta, String> otsikko;
 
+    /**
+     * Konstruktori tekstiäyttöliittymälle.
+     * 
+     * @param peli Peli-luokan ilmentymä.
+     */
     public Teksti(Peli peli) {
         this.lukija = new Scanner(System.in);
         this.peli = peli;

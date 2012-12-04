@@ -22,6 +22,16 @@ public class HeitaListener implements ActionListener {
     private ArrayList<GraafNoppa> gNopat;
     private int heittoLaskuri;
 
+    /**
+     * Konstruktori saa argumentteina nopat ja pelin.
+     * 
+     * Nopat ovat noppien graafinen esitys JButton-laajennuksina JPanel-oliossa
+     * ja kuuntelija tarvitsee myös Peli-olion ilmentymän jotta se voi käsitellä
+     * varsinaisia Noppa-olioita.
+     * 
+     * @param nopat Graafiset nopat JPanel-oliona.
+     * @param peli Peli-luokan ilmentymä.
+     */
     public HeitaListener(JPanel nopat, Peli peli) {
         this.peli = peli;
         this.gNopat = new ArrayList<>();

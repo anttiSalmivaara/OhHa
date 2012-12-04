@@ -10,6 +10,9 @@ public class Noppa {
     private int silmaluku;
     private Random random;
     
+    /**
+     * Konstruktori luo satunnaislukugeneraattorin.
+     */
     public Noppa() {
         this.random = new Random();
     }

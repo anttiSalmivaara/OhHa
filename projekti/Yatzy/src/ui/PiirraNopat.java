@@ -13,6 +13,9 @@ public class PiirraNopat {
     
     private String alkunopat;
     
+    /**
+     * Luo pelin alussa näkyvät nopat.
+     */
     public PiirraNopat() {
         this.alkunopat = "┌───────┐ ┌───────┐ ┌───────┐ ┌───────┐ ┌───────┐\n" + 
                          "│       │ │       │ │       │ │       │ │       │\n" +

@@ -16,10 +16,24 @@ public class KenttaNappi extends JButton {
 
     private Kentta kentta;
 
-    public KenttaNappi(int pelaaja, JPanel nopat, JPanel taulukko, Peli peli, Kentta kentta) {
+    /**
+     * Konstruktori saa argumenttina kentän tarvitsemat tiedot.
+     * 
+     * Konstruktori saa pelaajanumeron välitettäväksi pistetaulukon
+     * kuuntelijalle, graafiset nopat JPanel-oliona, pelaajan koko
+     * pistetaulukon, Peli-olion ilmentymän sekä tiedon siitä, mitä kenttää
+     * nappi edustaa.
+     * 
+     * @param pelaaja Pelaajanumero KenttaNapin kuuntelijalle.
+     * @param nopat Graafiset Nopat JPanel-oliossa.
+     * @param taulukko Pelaajan pistetaulukko.
+     * @param peli Peli-luokan ilmentymä.
+     * @param kentta Tieto siitä, mitä kenttää nappi edustaa.
+     */
+    public KenttaNappi(int pelaajaNro, JPanel nopat, JPanel taulukko, Peli peli, Kentta kentta) {
         super();
         this.kentta = kentta;
-        this.addActionListener(new ScoreCardListener(pelaaja, nopat, taulukko, peli, this.kentta));
+        this.addActionListener(new ScoreCardListener(pelaajaNro, nopat, taulukko, peli, this.kentta));
         if (this.kentta == Kentta.BONUS || this.kentta == Kentta.SUMMA) {
             super.setEnabled(false);
             super.setText("0");
@@ -42,6 +56,10 @@ public class KenttaNappi extends JButton {
         super.setEnabled(false);
     }
     
+    /**
+     * Asettaa pistemäärän kenttään.
+     * @param text Pistemäärä String-oliona.
+     */
     @Override
     public final void setText(String text) {
         super.setText(text);

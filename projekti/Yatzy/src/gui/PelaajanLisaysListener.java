@@ -23,6 +23,18 @@ public class PelaajanLisaysListener implements ActionListener {
     private JTextField p2;
     private Peli peli;
     
+    /**
+     * Konstruktori lisäysnapin kuuntelijalle.
+     * 
+     * Kuuntelija saa argumenttina Container-olion, joka sisältää koko
+     * käyttöliittymän toiminnallisuuden ja asioita helpottaakseen erikseen
+     * kentät, joihin pelajaien nimet syötetään, sekä Peli-olion ilmentymän.
+     * 
+     * @param container Koko käyttöliittymä.
+     * @param p1 Pelaajan 1 nimikenttä.
+     * @param p2 Pelaajan 2 nimikenttä.
+     * @param peli Peli-olion ilmentymä.
+     */
     public PelaajanLisaysListener(Container container, JTextField p1, JTextField p2, Peli peli) {
         this.container = container;
         this.p1 = p1;
@@ -33,8 +45,10 @@ public class PelaajanLisaysListener implements ActionListener {
     /**
      * Lisää pelaajat peliin.
      * 
+     * Kertoo Peli-oliolle, että peli alkaa, tulostaa ensimmäiset nopat,
+     * deaktivoi järjestyksessä toisen pelaajan kentät, hakee pelaajien nimet.
      * Vaihtaa käyttöliittymän keskipaneelin näkymän pelikentäksi.
-     * @param ae 
+     * @param ae Pelaajan lisäysnapin event.
      */
     @Override
     public void actionPerformed(ActionEvent ae) {
@@ -43,8 +57,8 @@ public class PelaajanLisaysListener implements ActionListener {
         peli.aloita();
         this.piirraUudetNopat( (JButton) ae.getSource());
         this.deAktivoiKentat();
-        ((JTextField) ((JPanel) ((JPanel) ((JPanel) container.getComponent(1)).getComponent(1)).getComponent(1)).getComponent(0)).setText(peli.getPelaajat().get(0).getNimi());
-        ((JTextField) ((JPanel) ((JPanel) ((JPanel) container.getComponent(1)).getComponent(1)).getComponent(2)).getComponent(0)).setText(peli.getPelaajat().get(1).getNimi());        
+        ((JTextField) ((JPanel) ((JPanel) ((JPanel) container.getComponent(1)).getComponent(1)).getComponent(1)).getComponent(0)).setText(p1.getText());
+        ((JTextField) ((JPanel) ((JPanel) ((JPanel) container.getComponent(1)).getComponent(1)).getComponent(2)).getComponent(0)).setText(p2.getText());        
         ((CardLayout) container.getLayout()).show(container, "peli");
     }
     

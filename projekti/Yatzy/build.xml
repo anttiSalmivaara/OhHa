@@ -71,4 +71,22 @@
     nbproject/build-impl.xml file. 
 
     -->
+    <!-- ei toiminut cobertura...
+    <property environment="env"/>
+
+    <taskdef classpath="cobertura.jar" resource="tasks.properties"/>
+
+    <target name="-pre-compile-test">
+        <delete dir="${build.instrumented.dir}" />
+        <delete dir="${build.report.cobertura.dir}" />
+        <mkdir dir="${build.instrumented.dir}" />
+        <mkdir dir="${build.report.cobertura.dir}" />
+        <cobertura-instrument todir="${build.instrumented.dir}">
+            <fileset dir="${build.classes.dir}">
+                <include name="**/*.class"/>
+            </fileset>
+        </cobertura-instrument>
+    </target>
+    -->
+
 </project>

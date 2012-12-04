@@ -14,6 +14,9 @@ public class Pistetaulukko {
 
     private EnumMap<Kentta, Integer> pistetaulukko;
 
+    /**
+     * Konstruktori luo pistetaulukon Enum-kuvauksena.
+     */
     public Pistetaulukko() {
         this.pistetaulukko = new EnumMap<>(Kentta.class);
     }

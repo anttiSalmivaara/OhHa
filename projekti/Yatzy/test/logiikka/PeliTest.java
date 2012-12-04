@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package logiikka;
 
 import java.util.ArrayList;
@@ -17,7 +13,7 @@ import yatzy.Pelaaja;
 
 /**
  *
- * @author antti
+ * @author Antti Salmivaara <antti.salmivaara@helsinki.fi>
  */
 public class PeliTest {
 
@@ -32,6 +28,7 @@ public class PeliTest {
     private Collection<Noppa> kutoset;
     private Collection<Noppa> pSuora;
     private Collection<Noppa> sSuora;
+    private Collection<Noppa> taysKasi;
 
     public PeliTest() {
     }
@@ -78,6 +75,13 @@ public class PeliTest {
         sSuora = new ArrayList<>();
         for (int i = 2; i < 7; i++) {
             sSuora.add(new HuonoNoppa(i));
+        }
+        taysKasi = new ArrayList<>();
+        for (int i = 0; i < 2; i++) {
+            taysKasi.add(new HuonoNoppa(2));
+        }
+        for (int i = 0; i < 3; i++) {
+            taysKasi.add(new HuonoNoppa(3));
         }
     }
 
@@ -248,7 +252,6 @@ public class PeliTest {
     @Test
     public void testGetPelaajat() {
         assertEquals("testPelaaja", peli.getPelaajat().get(0).getNimi());
-        // TODO review the generated test code and remove the default call to fail.
     }
 
     @Test
@@ -319,17 +322,47 @@ public class PeliTest {
     /**
      * Test of ryhmitteleLuvunMukaan method, of class Peli.
      */
-//    @Test
-//    public void testRyhmitteleLuvunMukaan() {
-//        System.out.println("ryhmitteleLuvunMukaan");
-//        Collection<Noppa> nList = null;
-//        Peli instance = new Peli();
-//        Map expResult = null;
-//        Map result = instance.ryhmitteleLuvunMukaan(nList);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
+    @Test
+    public void testRyhmitteleLuvunMukaanNopatSamoja() {
+        Map<Integer, Integer> tulos = peli.ryhmitteleLuvunMukaan(ykkoset);
+        assertTrue(tulos.get(1) == 5 &&
+                tulos.get(2) == 0 &&
+                tulos.get(3) == 0 &&
+                tulos.get(4) == 0 &&
+                tulos.get(5) == 0 &&
+                tulos.get(6) == 0);
+    }
+
+    @Test
+    public void testRyhmitteleLuvunMukaanNopatEri() {
+        Map<Integer, Integer> tulos = peli.ryhmitteleLuvunMukaan(pSuora);
+        assertTrue(tulos.get(1) == 1
+                && tulos.get(2) == 1
+                && tulos.get(3) == 1
+                && tulos.get(4) == 1
+                && tulos.get(5) == 1
+                && tulos.get(6) == 0);
+    }
+
+    @Test
+    public void testRyhmitteleLuvunMukaanKaksiSamaaSilmalukua() {
+        ArrayList<Noppa> testiNopat = new ArrayList<>();
+        testiNopat.add(new HuonoNoppa(1));
+        testiNopat.add(new HuonoNoppa(2));
+        testiNopat.add(new HuonoNoppa(2));
+        testiNopat.add(new HuonoNoppa(3));
+        testiNopat.add(new HuonoNoppa(4));
+        
+        Map<Integer, Integer> tulos = peli.ryhmitteleLuvunMukaan(testiNopat);
+        
+        assertTrue(tulos.get(1) == 1 &&
+                tulos.get(2) == 2 &&
+                tulos.get(3) == 1 &&
+                tulos.get(4) == 1 &&
+                tulos.get(5) == 0 &&
+                tulos.get(6) == 0);
+    }
+
     /**
      * Test of laskeSuora method, of class Peli.
      */
@@ -342,7 +375,7 @@ public class PeliTest {
         int mista = 1;
         int mihin = 5;
         int expResult = 15;
-        int result = peli.laskeSuora(nList, 1, 5);
+        int result = peli.laskeSuora(nList, mista, mihin);
         assertEquals(expResult, result);
     }
 
@@ -355,7 +388,7 @@ public class PeliTest {
         int mista = 1;
         int mihin = 5;
         int expResult = 0;
-        int result = peli.laskeSuora(nList, 1, 5);
+        int result = peli.laskeSuora(nList, mista, mihin);
         assertEquals(expResult, result);
     }
 
@@ -381,7 +414,7 @@ public class PeliTest {
         int mista = 2;
         int mihin = 6;
         int expResult = 0;
-        int result = peli.laskeSuora(nList, 2, 6);
+        int result = peli.laskeSuora(nList, mista, mihin);
         assertEquals(expResult, result);
     }
 
@@ -406,22 +439,94 @@ public class PeliTest {
         }
         peli.laskeBonusPisteet(peli.getPelaajat().get(0));
         double apulainen = 1.0 * peli.getPelaajat().get(0).getPisteet().get(Kentta.BONUS);
-        assertEquals(50.0, apulainen);
+        assertEquals(50, apulainen, 0.001);
     }
 
-    private void kirjaaPisteet(Peli pp, Collection<Noppa> nopat, Pelaaja p, Kentta k) {
-        try {
-            pp.kirjaaPisteet(p, k, nopat);
-
-
-
-
-        } catch (Exception e) {
+    /**
+     * Test of aloita method, of class Peli.
+     */
+    @Test
+    public void testAloita() {
+        Peli testiPeli = new Peli();
+        testiPeli.addPelaaja("testi1");
+        testiPeli.addPelaaja("testi2");
+        testiPeli.aloita();
+        
+        int apuSumma = 0;
+        for (Noppa n : testiPeli.getNopat().values()) {
+            apuSumma += n.getLuku();
         }
+        
+        assertTrue(testiPeli.getVuorossa().getNimi().equals("testi1") &&
+                   apuSumma != 0);
     }
+
+    /**
+     * Test of vuoroVaihtuu method, of class Peli.
+     */
+    @Test
+    public void testVuoroVaihtuu() {
+        Peli testiPeli = new Peli();
+        testiPeli.addPelaaja("testi1");
+        testiPeli.addPelaaja("testi2");
+        
+        testiPeli.aloita();
+        testiPeli.vuoroVaihtuu();
+        
+        assertEquals("testi2", testiPeli.getVuorossa().getNimi());
+    }
+
+    /**
+     * Test of getVuorossa method, of class Peli.
+     */
+    @Test
+    public void testGetVuorossa() {
+        peli.aloita();
+        assertEquals("testPelaaja", peli.getVuorossa().getNimi());
+    }
+
+    /**
+     * Test of getVoittaja method, of class Peli.
+     */
+    @Test
+    public void testGetVoittaja() {
+        Peli testiPeli = new Peli();
+        testiPeli.addPelaaja("testi1");
+        testiPeli.addPelaaja("testi2");
+        
+        testiPeli.getPelaajat().get(0).asetaPisteet(10, Kentta.YKKOSET);
+        testiPeli.getPelaajat().get(1).asetaPisteet(15, Kentta.YKKOSET);
+        
+        assertEquals("testi2", testiPeli.getVoittaja().getNimi());
+    }
+
+    /**
+     * Test of laskeKaksiParia method, of class Peli.
+     */
+    @Test
+    public void testLaskeKaksiPariaKunKaksiParia() {
+        assertEquals(10, peli.laskeKaksiParia(taysKasi));
+    }
+    
+    public void testLaskeKaksiPariaKunEiKahtaParia() {
+        assertEquals(0, peli.laskeKaksiParia(pSuora));
+    }
+
+    /**
+     * Test of laskeTaysKasi method, of class Peli.
+     */
+    @Test
+    public void testLaskeTaysKasiKunTayskasi() {
+        assertEquals(13, peli.laskeTaysKasi(taysKasi));
+    }
+    @Test
+    public void testLaskeTaysKasiKunEiTaysKasi() {
+        assertEquals(0, peli.laskeTaysKasi(pSuora));
 }
 
-class HuonoNoppa extends Noppa {
+
+}
+    class HuonoNoppa extends Noppa {
 
     private int sLuku;
 

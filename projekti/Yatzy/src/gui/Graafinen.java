@@ -126,8 +126,16 @@ public class Graafinen implements Runnable {
 
         return palaute;
     }
-
-    private JPanel taulukko() throws Exception {
+    
+    /**
+     * Luo varsinaisen pelikentän.
+     * 
+     * Pelikentän vasemmalla puolella on kenttien otsikot, oikealla puolella
+     * kahden pelaajan pistetaulukot.
+     * 
+     * @return Pelikenttä JPanel-oliona.
+     */
+    private JPanel taulukko() {
         JPanel palaute = new JPanel();
         palaute.setMinimumSize(new Dimension(400, 400));
         palaute.setMaximumSize(new Dimension(400, 400));
@@ -143,7 +151,7 @@ public class Graafinen implements Runnable {
      * Nopat lisätään nappeina JPanel-olioon.
      *
      * @return Nopat JPanel-oliossa.
-     * @throws Exception
+     * @throws Exception Poikkeus jos nopan ikonia ei pystytä lukemaan.
      */
     private JPanel nopat(NoppaIconMaker ikonit) throws Exception {
         JPanel palaute = new JPanel();

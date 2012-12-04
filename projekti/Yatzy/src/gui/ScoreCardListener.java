@@ -27,6 +27,18 @@ public class ScoreCardListener implements ActionListener {
     private ArrayList<GraafNoppa> gNopat;
     private int vastaPelaajaNro;
 
+    /**
+     * Konstruktori saa argumenttina pistetaulukon kenttiä edustavan napin tiedot.
+     * 
+     * Konstruktori lisää graafiset nopat JPanelista listaan ja tallentaa
+     * tiedot, kuten tiedon siitä, mikä on vastapelaajan numero.
+     * 
+     * @param pelaajaNro Pelaajan numero.
+     * @param noppaPanel Nopat JPanel-oliossa.
+     * @param taulukko Pelaajan pistetaulukko.
+     * @param peli Peli-luokan ilmentymä.
+     * @param kentta Tieto siitä, mitä kenttää kuuntelija kuuntelee.
+     */
     public ScoreCardListener(int pelaajaNro, JPanel noppaPanel, JPanel taulukko, Peli peli, Kentta kentta) {
         
         this.gNopat = new ArrayList<>();
