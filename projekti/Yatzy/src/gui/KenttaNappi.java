@@ -20,9 +20,9 @@ public class KenttaNappi extends JButton {
         super();
         this.kentta = kentta;
         this.addActionListener(new ScoreCardListener(pelaaja, nopat, taulukko, peli, this.kentta));
-        if (this.kentta == Kentta.BONUS && this.kentta == Kentta.SUMMA) {
-            this.setEnabled(false);
-            this.setText("0");
+        if (this.kentta == Kentta.BONUS || this.kentta == Kentta.SUMMA) {
+            super.setEnabled(false);
+            super.setText("0");
         }
     }
 

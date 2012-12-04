@@ -6,9 +6,11 @@ import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Map;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextPane;
+import logiikka.Noppa;
 import logiikka.Peli;
 import yatzy.Kentta;
 
@@ -26,8 +28,8 @@ public class ScoreCardListener implements ActionListener {
     private int vastaPelaajaNro;
 
     public ScoreCardListener(int pelaajaNro, JPanel noppaPanel, JPanel taulukko, Peli peli, Kentta kentta) {
-        this.gNopat = new ArrayList<>();
         
+        this.gNopat = new ArrayList<>();
         this.taulukko = taulukko;
         this.peli = peli;
         this.kentta = kentta;
@@ -46,7 +48,18 @@ public class ScoreCardListener implements ActionListener {
     /**
      * Tallentaa arvon kenttään ja vaihtaa vuoroa.
      * 
-     * Deaktivoi sen pelaajan kentät, joka ei ole vuorossa.
+     * Metodi kirjaa pisteet pelaajan pistetaulukkoon. Poistaa pistekenttää
+     * edustavan KenttaNapin käytöstä, sekä asettaa näkyviin pisteet. Sen
+     * jälkeen tarkistetaan, tuleeko bonuskenttään pisteitä, päivitetään summa
+     * summakenttään. Sitten deaktivoidaan vuoron päättäneen pelaajan
+     * pistetaulukko ja aktivoidaan vastapelaajan. Tämän jälkeen ilmoitetaan
+     * Peli-oliolle, että vuoro vaihtuu. Seuraavaksi heitetään uudet nopat ja 
+     * asetetaan ne näkyville. Jos noppia on heitetty kolme kertaa edellisellä
+     * vuorolla täytyy ne aktivoida uudelleen, samoin kuin heitä-nappi.
+     * Heittolaskuri nollataan.
+     * 
+     * Viimeiseksi tarkistetaan onko peli loppu, ja jos on, näytetään
+     * lopetusruutu.
      * 
      * @param ae Nappievent
      */
@@ -59,14 +72,20 @@ public class ScoreCardListener implements ActionListener {
         }
         ((KenttaNappi) ae.getSource()).setEnabled(false);
         ((KenttaNappi) ae.getSource()).setText("" + peli.getVuorossa().getPisteet().get(kentta));
-        laskeBonusPisteet();
-        laskeSumma();
-        deAktivoiKentat();
-        aktivoiVastapelaajanKentat();
+        this.laskeBonusPisteet();
+        this.laskeSumma();
+        this.deAktivoiKentat();
+        this.aktivoiVastapelaajanKentat();
         peli.vuoroVaihtuu();
-        peli.heitaKaikkiNopat();
-        uudetNopat();
+        this.piirraUudetNopat(peli.heitaKaikkiNopat());
+        for (GraafNoppa gn : gNopat) {
+            gn.setEnabled(true);
+        }
+        
+        //aktivoidaan heitä-nappi:
         ((JButton) ((JPanel) ((JPanel) taulukko.getParent()).getParent()).getComponent(2)).setEnabled(true);
+        
+        ((HeitaListener) ((JButton) ((JPanel) ((JPanel) taulukko.getParent()).getParent()).getComponent(2)).getActionListeners()[0]).nollaaLaskuri();
         if (peli.peliLoppu()) {
             vaihdaLopetusRuutu();
         }
@@ -77,7 +96,7 @@ public class ScoreCardListener implements ActionListener {
      */
     private void laskeBonusPisteet() {
         if (peli.getVuorossa().getPisteet().containsKey(Kentta.BONUS)) {
-            ((KenttaNappi) taulukko.getComponent(7)).setText(peli.getVuorossa().getPisteet().get(Kentta.BONUS) + "");
+            ((KenttaNappi) taulukko.getComponent(7)).setText("" + peli.getVuorossa().getPisteet().get(Kentta.BONUS));
         }
     }
     
@@ -99,6 +118,10 @@ public class ScoreCardListener implements ActionListener {
         }
     }
     
+    /**
+     * Aktivoi vuoron jälkeen vastapelaajan kentät.
+     * 
+     */
     private void aktivoiVastapelaajanKentat() {
         JPanel vastustaja = (JPanel) ((JPanel) taulukko.getParent()).getComponent(vastaPelaajaNro);
         for (int i = 1; i < 17; i++) {
@@ -109,21 +132,37 @@ public class ScoreCardListener implements ActionListener {
         }
     }
     
-    private void uudetNopat() {
+    /**
+     * Päivittää noppien ikonit pisteiden tallennuksen jälkeen.
+     * 
+     */
+    private void piirraUudetNopat(Map<Integer, Noppa> nopat) {
         for (int i = 0; i < 5; i++) {
-            gNopat.get(i).uusiNoppa(peli.getNopat().get(i + 1).getLuku());
+            gNopat.get(i).uusiNoppa(nopat.get(i + 1).getLuku());
+            gNopat.get(i).aktivoi();
         }
     }
     
+    /**
+     * Kun Peli on loppu, vaihdetaan loppuruutu.
+     * 
+     */
     private void vaihdaLopetusRuutu() {
         Container pelisarakkeet = taulukko.getParent();
         Container pelikentta = pelisarakkeet.getParent();
         Container luoRuudut = pelikentta.getParent();
         CardLayout luoRuudutLayout = (CardLayout) luoRuudut.getLayout();
-        ((JLabel) ((JPanel) luoRuudut.getComponent(2)).getComponent(0)).setText(lopetusRuudunTeksti());
+        ((JTextPane) ((JPanel) luoRuudut.getComponent(2)).getComponent(0)).setText(lopetusRuudunTeksti());
         luoRuudutLayout.show(luoRuudut, "loppu");
     }
     
+    /**
+     * Palauttaa tekstin lopetusruutuun.
+     * 
+     * Ilmoittaa voittajan ja voittajan pistemäärän.
+     * 
+     * @return Lopetusruudun teksti.
+     */
     private String lopetusRuudunTeksti() {
         StringBuilder sb = new StringBuilder();
         sb.append("Peli loppu!");

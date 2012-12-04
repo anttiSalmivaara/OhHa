@@ -68,3 +68,9 @@
 03.12.2012
   19.00 - 03.30
     Graafisen käyttöliittymän ohjelmointia.
+03.12.2012
+  18.00 - 00.00
+    Graafisen käyttöliittymän ohjelmointia.
+04.12.2012
+  00.00 - 02.15
+    Graafisen käyttöliittymän ohjelmointia.

@@ -368,7 +368,7 @@ public class PeliTest {
         int mista = 2;
         int mihin = 6;
         int expResult = 20;
-        int result = peli.laskeSuora(nList, 2, 6);
+        int result = peli.laskeSuora(nList, mista, mihin);
         assertEquals(expResult, result);
     }
 
@@ -405,7 +405,8 @@ public class PeliTest {
             pt.put(apuLista.get(i), 5 * i);
         }
         peli.laskeBonusPisteet(peli.getPelaajat().get(0));
-        assertEquals(50, peli.getPelaajat().get(0).getPisteet().get(Kentta.BONUS));
+        double apulainen = 1.0 * peli.getPelaajat().get(0).getPisteet().get(Kentta.BONUS);
+        assertEquals(50.0, apulainen);
     }
 
     private void kirjaaPisteet(Peli pp, Collection<Noppa> nopat, Pelaaja p, Kentta k) {

@@ -44,6 +44,7 @@ public class NoppaIconMaker {
             return null;
         }
     }
+    
     /**
      * Luo ikonit kuvista konstruktorin käskystä.
      * 

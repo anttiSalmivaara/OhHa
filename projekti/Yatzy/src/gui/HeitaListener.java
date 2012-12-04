@@ -19,14 +19,16 @@ import logiikka.Peli;
 public class HeitaListener implements ActionListener {
 
     private Peli peli;
-    private ArrayList<GraafNoppa> nopat;
+    private ArrayList<GraafNoppa> gNopat;
+    private int heittoLaskuri;
 
     public HeitaListener(JPanel nopat, Peli peli) {
         this.peli = peli;
-        this.nopat = new ArrayList<>();
+        this.gNopat = new ArrayList<>();
         for (Component c : nopat.getComponents()) {
-            this.nopat.add((GraafNoppa) c);
+            this.gNopat.add((GraafNoppa) c);
         }
+        this.heittoLaskuri = 0;
     }
 
     /**
@@ -36,14 +38,21 @@ public class HeitaListener implements ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent ae) {
-        Map<Integer, Noppa> uudet = peli.heitaNopat(getHeitettavat());
-        uudetSilmaluvut(uudet);
-        for (GraafNoppa n : nopat) {
+        uudetSilmaluvut(peli.heitaNopat(getHeitettavat()));
+        for (GraafNoppa n : gNopat) {
             n.aktivoi();
         }
-        if (peli.getHeittojenMaara() == 3) {
-            ((JButton) ae.getSource()).setEnabled(false);
+        heittoLaskuri++;
+        if (heittoLaskuri == 2) {
+           ((JButton) ae.getSource()).setEnabled(false);
         }
+    }
+    
+    /**
+     * Nollaa noppien heittokertojen laskurin.
+     */
+    public void nollaaLaskuri() {
+        heittoLaskuri = 0;
     }
 
     /**
@@ -56,16 +65,21 @@ public class HeitaListener implements ActionListener {
     private List<Integer> getHeitettavat() {
         ArrayList<Integer> palaute = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            if (!nopat.get(i).isSelected()) {
+            if (!gNopat.get(i).isSelected()) {
                 palaute.add(i + 1);
             }
         }
         return palaute;
     }
     
+    /**
+     * Päivittää nopan ikonit vastaamaan noppien silmälukua.
+     * 
+     * @param uudet Noppien tilanne Inteer-Noppa-kuvauksena.
+     */
     private void uudetSilmaluvut(Map<Integer, Noppa> uudet) {
         for (int i = 1; i < 6; i++) {
-            nopat.get(i - 1).uusiNoppa(uudet.get(i).getLuku());
+            gNopat.get(i - 1).uusiNoppa(uudet.get(i).getLuku());
         }
     }
 }

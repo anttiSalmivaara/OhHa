@@ -17,8 +17,6 @@ public class Peli {
     private ArrayList<Pelaaja> pelaajat;
     private HashMap<Integer, Noppa> nopat;
     private Pelaaja nytVuorossa;
-    private int heittoLaskuri;
-    private final int MAXHEITOT = 3;
 
     public Peli() {
         this.pelaajat = new ArrayList<>();
@@ -27,10 +25,15 @@ public class Peli {
             this.nopat.put(i, new Noppa());
         }
     }
-
+    
+    /**
+     * Aloittaa kirjanpidon vuorossa olevasta pelaajasta.
+     * 
+     * Heitetään nopat ensimmäisen kerran.
+     */
     public void aloita() {
         nytVuorossa = pelaajat.get(0);
-        heittoLaskuri = 0;
+        heitaKaikkiNopat();
     }
 
     /**
@@ -48,7 +51,6 @@ public class Peli {
         for (int n : heitettavat) {
             nopat.get(n).heita();
         }
-        heittoLaskuri++;
         return nopat;
     }
 
@@ -58,9 +60,7 @@ public class Peli {
      * @return Integer-Noppa-kuvaus, joka sisältää kaikki nopat.
      */
     public Map<Integer, Noppa> heitaKaikkiNopat() {
-        heittoLaskuri++;
         return heitaNopat(Arrays.asList(1, 2, 3, 4, 5));
-
     }
 
     /**
@@ -155,16 +155,22 @@ public class Peli {
         pelaajat.add(new Pelaaja(pelaaja));
     }
 
+    /**
+     * Metodin avulla ilmoitetaan Peli-luokalle, että on aika vaihtaa pelivuoroa.
+     */
     public void vuoroVaihtuu() {
         if (nytVuorossa.hashCode() == pelaajat.get(0).hashCode()) {
             nytVuorossa = pelaajat.get(1);
         } else {
             nytVuorossa = pelaajat.get(0);
         }
-        heittoLaskuri = 0;
-
     }
 
+    /**
+     * Palauttaa vuorossa olevan pelaajan.
+     *
+     * @return Vuorossa oleva Pelaaja-olio.
+     */
     public Pelaaja getVuorossa() {
         return this.nytVuorossa;
     }
@@ -187,10 +193,11 @@ public class Peli {
         return nopat;
     }
 
-    public int getHeittojenMaara() {
-        return heittoLaskuri;
-    }
-
+    /**
+     * Palauttaa pelin voittajan.
+     *
+     * @return pelin voittanut Pelaaja-olio.
+     */
     public Pelaaja getVoittaja() {
         Pelaaja palaute = null;
         int laskuri = 0;

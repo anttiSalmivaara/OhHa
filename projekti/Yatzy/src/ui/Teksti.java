@@ -14,16 +14,16 @@ import yatzy.Pelaaja;
  *
  * @author Antti Salmivaara <antti.salmivaara@helsinki.fi>
  */
-public class Teksti implements Kayttoliittyma {
+public class Teksti {
 
     private Scanner lukija;
     private Peli peli;
     private PiirraNopat noppaPiirturi;
     private Map<Kentta, String> otsikko;
 
-    public Teksti() {
+    public Teksti(Peli peli) {
         this.lukija = new Scanner(System.in);
-        this.peli = new Peli();
+        this.peli = peli;
         this.noppaPiirturi = new PiirraNopat();
         this.otsikko = luoOtsikko();
     }
@@ -34,7 +34,7 @@ public class Teksti implements Kayttoliittyma {
      * Metodi tulostaa pelitilanteet ja lukee käyttäjän syötteet ja
      * kutsuu apumetodeja.
      */
-    @Override
+
     public void run() {
 
         System.out.println(noppaPiirturi.alkuNopat());
@@ -125,7 +125,6 @@ public class Teksti implements Kayttoliittyma {
      * Metodi kutsuu PiirraNopat-luokan ilmentymää noppaPiirturi ja 
      * tulostaa ruudulle saamansa String-syötteen.
      */
-    @Override
     public void tulostaNopat() {
         System.out.println(noppaPiirturi.tulostaNopat(peli.getNopat().values()));
     }
@@ -136,7 +135,6 @@ public class Teksti implements Kayttoliittyma {
      * Metodi tulostaa pistetaulukon pisteineen ruudulle kutsumalla pelaajien
      * pisteitä ja apumetodeja.
      */
-    @Override
     public void tulostaTaulukko() {
         System.out.println(ylaviiva);
         System.out.print("│        │");
@@ -160,10 +158,8 @@ public class Teksti implements Kayttoliittyma {
                         System.out.print(" ");
                     }
                 }
-
             }
             System.out.println("│");
-
         }
         System.out.println(alaviiva);
     }

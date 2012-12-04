@@ -17,10 +17,10 @@ public class GraafNoppa extends JToggleButton {
      * 
      * @param icon Aluksi näytettävä ikoni.
      */
-    public GraafNoppa(NoppaIconMaker ikonit, int alkuSilma) {
+    public GraafNoppa(NoppaIconMaker ikonit) {
         super();
         this.ikonit = ikonit;
-        super.setIcon(ikonit.getIcon(alkuSilma));
+        super.setIcon(ikonit.getIcon(1));
         super.setMaximumSize(new Dimension(80, 80));
     }
 
@@ -33,7 +33,17 @@ public class GraafNoppa extends JToggleButton {
         super.setIcon(ikonit.getIcon(silmaluku));
     }
     
+    /**
+     * Palauttaa nopan alkutilaan heiton jälkeen.
+     */
     public void aktivoi() {
         super.setSelected(false);
+    }
+    
+    /**
+     * Metodi, jonka avulla noppa deaktivoidaan kun heittoja on kolme.
+     */
+    public void passivoi() {
+        super.setEnabled(false);
     }
 }

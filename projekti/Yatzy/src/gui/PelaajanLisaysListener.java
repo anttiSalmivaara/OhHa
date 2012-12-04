@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package gui;
 
 import java.awt.CardLayout;
@@ -44,14 +40,21 @@ public class PelaajanLisaysListener implements ActionListener {
     public void actionPerformed(ActionEvent ae) {
         peli.addPelaaja(p1.getText());
         peli.addPelaaja(p2.getText());
-        peli.heitaKaikkiNopat();
         peli.aloita();
-        piirraUudetNopat( (JButton) ae.getSource());
+        this.piirraUudetNopat( (JButton) ae.getSource());
+        this.deAktivoiKentat();
+        ((JTextField) ((JPanel) ((JPanel) ((JPanel) container.getComponent(1)).getComponent(1)).getComponent(1)).getComponent(0)).setText(peli.getPelaajat().get(0).getNimi());
+        ((JTextField) ((JPanel) ((JPanel) ((JPanel) container.getComponent(1)).getComponent(1)).getComponent(2)).getComponent(0)).setText(peli.getPelaajat().get(1).getNimi());        
         ((CardLayout) container.getLayout()).show(container, "peli");
     }
     
-    private void piirraUudetNopat(JButton lisaaPelaaja) {
-        JPanel alkuRuutu = (JPanel) lisaaPelaaja.getParent();
+    /**
+     * Piirtää nopat kun peli alkaa.
+     * 
+     * @param lisaaPelaaja Nappi jonka avulla haetaan noppapaneeli.
+     */
+    private void piirraUudetNopat(JButton pelaajanLisaavaNappi) {
+        JPanel alkuRuutu = (JPanel) pelaajanLisaavaNappi.getParent();
         JPanel cardLayoutRuutu = (JPanel) alkuRuutu.getParent();
         JPanel peliKentta = (JPanel) cardLayoutRuutu.getComponent(1);
         JPanel noppaPanel = (JPanel) peliKentta.getComponent(0);
@@ -63,6 +66,20 @@ public class PelaajanLisaysListener implements ActionListener {
         
         for (int i = 0; i < 5; i++) {
             gNopat.get(i).uusiNoppa(peli.getNopat().get(i + 1).getLuku());
+        }
+    }
+    
+    /**
+     * Deaktivoi pelin alkaessa järjestyksessä toisen pelaajan kentät.
+     */
+    private void deAktivoiKentat() {
+        Container pelikentta = (Container) container.getComponent(1);
+        Container taulukko = (Container) pelikentta.getComponent(1);
+        Container yhdenPelaajanTaulukko = (Container) taulukko.getComponent(2);
+        for (int i = 1; i < 17; i++) {
+            if (((KenttaNappi) yhdenPelaajanTaulukko.getComponents()[i]).isEnabled()) {
+                ((KenttaNappi) yhdenPelaajanTaulukko.getComponents()[i]).setEnabled(false);
+            }
         }
     }
     
