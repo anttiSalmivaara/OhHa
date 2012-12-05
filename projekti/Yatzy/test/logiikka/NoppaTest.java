@@ -17,7 +17,7 @@ public class NoppaTest {
 
     @Before
     public void setUp() {
-        noppa = new Noppa();
+        this.noppa = new Noppa();
     }
     @Test
     public void getteriToimii() {

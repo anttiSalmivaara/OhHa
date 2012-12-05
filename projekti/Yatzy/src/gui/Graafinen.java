@@ -98,7 +98,7 @@ public class Graafinen implements Runnable {
         palaute.add(new JLabel());
         palaute.add(info1);
         palaute.add(info2);
-        JButton addPlayer = new JButton("Lisää pelaajat");
+        JButton addPlayer = new JButton("Lisää pelaajat ja aloita peli");
         addPlayer.addActionListener(new PelaajanLisaysListener(frame.getContentPane(), p1, p2, peli));
         palaute.add(addPlayer);
         palaute.add(new JLabel());
