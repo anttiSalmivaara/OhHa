@@ -80,3 +80,5 @@
 05.12.2012
   00.00 - 01.45
     Javadoc-kommentointia.
+  01.45 - 02.25
+    Luokkakaavion päivitys.
