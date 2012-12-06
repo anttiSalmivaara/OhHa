@@ -236,11 +236,20 @@ public class Graafinen implements Runnable {
      */
     private JPanel loppuRuutu() {
         JPanel palaute = new JPanel();
+        palaute.setLayout(new GridLayout(8,1));
 
-        JTextPane loppuviesti = new JTextPane();
-        loppuviesti.setEnabled(false);
-
-        palaute.add(loppuviesti);
+        JLabel loppuviesti1 = new JLabel();
+        JLabel loppuviesti2 = new JLabel();
+        JLabel loppuviesti3 = new JLabel();
+        
+        palaute.add(loppuviesti1);
+        palaute.add(loppuviesti2);
+        palaute.add(loppuviesti3);
+        palaute.add(new JLabel());
+        palaute.add(new JLabel());
+        palaute.add(new JLabel());
+        palaute.add(new JLabel());
+        palaute.add(new JLabel());
         return palaute;
 
     }

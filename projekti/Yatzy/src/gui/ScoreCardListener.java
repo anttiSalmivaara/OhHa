@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Map;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextPane;
 import logiikka.Noppa;
@@ -164,27 +165,9 @@ public class ScoreCardListener implements ActionListener {
         Container pelikentta = pelisarakkeet.getParent();
         Container luoRuudut = pelikentta.getParent();
         CardLayout luoRuudutLayout = (CardLayout) luoRuudut.getLayout();
-        ((JTextPane) ((JPanel) luoRuudut.getComponent(2)).getComponent(0)).setText(lopetusRuudunTeksti());
+        ((JLabel) ((JPanel) luoRuudut.getComponent(2)).getComponent(0)).setText("Peli loppu!");
+        ((JLabel) ((JPanel) luoRuudut.getComponent(2)).getComponent(1)).setText("Voittaja: " + peli.getVoittaja().getNimi());
+        ((JLabel) ((JPanel) luoRuudut.getComponent(2)).getComponent(2)).setText("Tulos: " + peli.getVoittaja().getSumma());
         luoRuudutLayout.show(luoRuudut, "loppu");
-    }
-    
-    /**
-     * Palauttaa tekstin lopetusruutuun.
-     * 
-     * Ilmoittaa voittajan ja voittajan pistemäärän.
-     * 
-     * @return Lopetusruudun teksti.
-     */
-    private String lopetusRuudunTeksti() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Peli loppu!");
-        sb.append("\n");
-        sb.append("Voittaja: ");
-        sb.append(peli.getVoittaja().getNimi());
-        sb.append("\n");
-        sb.append("Tulos: ");
-        sb.append(peli.getVoittaja().getSumma());
-        
-        return sb.toString();
     }
 }

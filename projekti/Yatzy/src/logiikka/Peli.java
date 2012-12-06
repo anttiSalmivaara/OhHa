@@ -339,6 +339,22 @@ public class Peli {
      */
     protected int laskeSuora(Collection<Noppa> noppaColl, int mista, int mihin) {
         Map<Integer, Integer> ryhmitelty = ryhmitteleLuvunMukaan(noppaColl);
+        
+        int verrokki = 0;
+        int varsinainen = 0;
+        for (int i = mista; i <= mihin; i++) {
+             verrokki += i;
+             if (ryhmitelty.get(i) == 1) {
+                varsinainen += i;
+             }
+        }
+        if (verrokki == varsinainen) {
+            return varsinainen;
+        } else {
+            return 0;
+        }
+        
+        /*
         ArrayList<Integer> silmaluvut = new ArrayList<>();
         for (int i : ryhmitelty.keySet()) {
             if (ryhmitelty.get(i) > 1) {
@@ -358,6 +374,7 @@ public class Peli {
             }
             return palaute;
         }
+        */
     }
 
     /**
