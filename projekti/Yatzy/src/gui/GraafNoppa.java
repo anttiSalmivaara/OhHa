@@ -13,9 +13,9 @@ public class GraafNoppa extends JToggleButton {
     private NoppaIconMaker ikonit;
 
     /**
-     * Konstruktori saa parametrina nopassa aluksi näkyvän ikonin.
+     * Konstruktori saa parametrina ikonin luontiolion.
      * 
-     * @param icon Aluksi näytettävä ikoni.
+     * @param ikonit Ikonit sisältävä olio.
      */
     public GraafNoppa(NoppaIconMaker ikonit) {
         super();
@@ -25,9 +25,9 @@ public class GraafNoppa extends JToggleButton {
     }
 
     /**
-     * Asettaa noppaan parametrina annetun ikonin.
+     * Asettaa noppaan silmälukua vastaavan ikonin
      * 
-     * @param icon 
+     * @param silmaluku Silmäluku jota vastaava ikoni asetetaan näkyville. 
      */
     public void uusiNoppa(int silmaluku) {
         super.setIcon(ikonit.getIcon(silmaluku));

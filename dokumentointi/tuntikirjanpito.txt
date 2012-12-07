@@ -82,3 +82,6 @@
     Javadoc-kommentointia.
   01.45 - 02.25
     Luokkakaavion päivitys.
+07.12.2012
+  19.00 - 21.00
+    Sekvenssikaaviot. Viimeiset pakkaukset ja dokumentointi.

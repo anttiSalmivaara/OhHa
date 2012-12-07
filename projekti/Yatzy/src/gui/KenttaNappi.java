@@ -24,7 +24,7 @@ public class KenttaNappi extends JButton {
      * pistetaulukon, Peli-olion ilmentymän sekä tiedon siitä, mitä kenttää
      * nappi edustaa.
      * 
-     * @param pelaaja Pelaajanumero KenttaNapin kuuntelijalle.
+     * @param pelaajaNro Pelaajanumero KenttaNapin kuuntelijalle.
      * @param nopat Graafiset Nopat JPanel-oliossa.
      * @param taulukko Pelaajan pistetaulukko.
      * @param peli Peli-luokan ilmentymä.
